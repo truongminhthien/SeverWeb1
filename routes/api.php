@@ -24,3 +24,10 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::post('/check-email-send-code', [UserController::class, 'checkEmailandsendCode']);
+Route::post('/check-code', [UserController::class, 'checkCode']);
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
+
+use App\Http\Controllers\API\CategoryController;
+
+Route::get('/categories', [CategoryController::class, 'allCategory']);

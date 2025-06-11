@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('phone');
             $table->string('address');
             $table->integer('role')->comment('0: User, 1: Admin');
+            $table->integer('code')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
