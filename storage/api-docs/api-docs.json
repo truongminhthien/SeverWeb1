@@ -51,6 +51,84 @@
                 }
             }
         },
+        "/api/featured-products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get list of featured products (rating >= 4)",
+                "description": "Returns a list of featured products with a rating greater than or equal to 4 and active status.",
+                "operationId": "getFeaturedProducts",
+                "responses": {
+                    "200": {
+                        "description": "List of featured products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Product"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No featured products found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No featured products found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/new-products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get newest products (order by created_at desc)",
+                "operationId": "2229495b59867634bf1b8e5b44b62877",
+                "responses": {
+                    "200": {
+                        "description": "List of newest products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/register": {
             "post": {
                 "tags": [
@@ -588,10 +666,88 @@
             }
         }
     },
+    "components": {
+        "schemas": {
+            "Product": {
+                "properties": {
+                    "id_product": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_category": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Nước Hoa Chanel"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "chanel.jpg"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "example": 1000000
+                    },
+                    "rating": {
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "gender": {
+                        "type": "string",
+                        "example": "female"
+                    },
+                    "volume": {
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "Eau de Parfum"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "views": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "discount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 10.5
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Hương thơm quyến rũ..."
+                    },
+                    "note": {
+                        "type": "string",
+                        "example": "Lưu ý khi sử dụng..."
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
     "tags": [
         {
             "name": "Category",
             "description": "Category"
+        },
+        {
+            "name": "Product",
+            "description": "Product"
         },
         {
             "name": "User",

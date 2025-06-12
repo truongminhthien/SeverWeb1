@@ -31,3 +31,8 @@ Route::post('/reset-password', [UserController::class, 'resetPassword']);
 use App\Http\Controllers\API\CategoryController;
 
 Route::get('/categories', [CategoryController::class, 'allCategory']);
+
+use App\Http\Controllers\API\ProductController;
+
+Route::get('/featured-products', [ProductController::class, 'featuredProduct']);
+Route::get('/new-products', [ProductController::class, 'newProduct']);

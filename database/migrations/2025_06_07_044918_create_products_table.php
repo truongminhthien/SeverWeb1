@@ -15,15 +15,20 @@ return new class extends Migration
             $table->id('id_product');
             $table->unsignedBigInteger('id_category');
             $table->foreign('id_category')->references('id_category')->on('categories')->onDelete('cascade');
-            $table->string('product_name');
-            $table->decimal('price', 10, 2);
+            $table->string('name');
+            $table->string('image');
+            $table->integer('price');
+            $table->integer('rating')->default(0);
+            $table->string('gender')->nullable();
+            $table->integer('volume')->nullable();
+            $table->string('type')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->integer('views')->default(0);
             $table->decimal('discount', 5, 2)->nullable();
             $table->text('description')->nullable();
-            $table->integer('quantity');
-            $table->string('image')->nullable();
-            $table->integer('views')->default(0);
-            $table->boolean('status')->default(1);
-            $table->timestamp('created_at');
+            $table->text('note')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
+            $table->timestamps();
         });
     }
 
