@@ -28,8 +28,10 @@ class User extends Authenticatable
         'password',
         'email',
         'phone',
+        'image',
         'address',
         'role',
+        'status',
     ];
 
     /**
@@ -41,6 +43,7 @@ class User extends Authenticatable
         'code',
         'password',
         'remember_token',
+        'email_verified_at',
     ];
 
     /**

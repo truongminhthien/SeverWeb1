@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\UserController;
 
+Route::get('/users', [UserController::class, 'getAllUser']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::put('/users/{id}', [UserController::class, 'update']);
@@ -27,6 +28,7 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::post('/check-email-send-code', [UserController::class, 'checkEmailandsendCode']);
 Route::post('/check-code', [UserController::class, 'checkCode']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
+Route::get('/order-history/{id}', [UserController::class, 'orderHistory']);
 
 use App\Http\Controllers\API\CategoryController;
 

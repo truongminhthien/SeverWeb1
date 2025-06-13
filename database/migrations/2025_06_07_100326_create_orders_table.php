@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('payment_method');
             $table->text('notes')->nullable();
             $table->enum('status', ['cart', 'preparing', 'shipping', 'delivered'])->default('cart');
+            $table->timestamp('order_date')->useCurrent();
             $table->timestamps();
         });
-
     }
 
     /**

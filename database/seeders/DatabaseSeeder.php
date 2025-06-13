@@ -749,6 +749,103 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
+        \App\Models\Order::insert([
+            [
+                "id_user" => 1,
+                "total_amount" => 45645674,
+                "customer_name" => "Thiện Trương",
+                "phone" => "123456789",
+                "address" => "123 Admin Street",
+                "payment_method" => "COD",
+                "notes" => "Giao hàng trong giờ hành chính",
+                "status" => "cart",
+                "order_date" => '2024-07-06 00:00:00',
+            ],
+            [
+                "id_user" => 1,
+                "total_amount" => 54535353,
+                "customer_name" => "Thiện Trương",
+                "phone" => "123456789",
+                "address" => "123 Admin Street",
+                "payment_method" => "Bank Transfer",
+                "notes" => "Giao hàng trong giờ hành chính",
+                "status" => "preparing",
+                "order_date" => '2024-05-03 00:00:00',
+            ],
+            [
+                "id_user" => 1,
+                "total_amount" => 4900000,
+                "customer_name" => "Thiện Trương",
+                "phone" => "123456789",
+                "address" => "123 Admin Street",
+                "payment_method" => "COD",
+                "notes" => "Giao hàng trong giờ hành chính",
+                "status" => "delivered",
+                "order_date" => '2023-10-22 00:00:00',
+            ],
+            [
+                "id_user" => 1,
+                "total_amount" => 4900000,
+                "customer_name" => "Thiện Trương",
+                "phone" => "123456789",
+                "address" => "123 Admin Street",
+                "payment_method" => "COD",
+                "notes" => "Giao hàng trong giờ hành chính",
+                "status" => "shipping",
+                "order_date" => '2025-02-22 00:00:00',
+            ],
+            [
+                "id_user" => 2,
+                "total_amount" => 7500000,
+                "customer_name" => "Tuấn Hiệp",
+                "phone" => "123456789",
+                "address" => "123 Admin Street",
+                "payment_method" => "Bank Transfer",
+                "notes" => null,
+                "status" => "shipping",
+                "order_date" => '2024-06-13 00:00:00',
+            ]
+        ]);
+
+        \App\Models\OrderDetail::insert([
+            [
+                "id_order" => 1,
+                "id_product" => 1,
+                "discount" => 0,
+                "quantity" => 2,
+            ],
+            [
+                "id_order" => 2,
+                "id_product" => 2,
+                "discount" => 100000,
+                "quantity" => 1,
+            ],
+            [
+                "id_order" => 3,
+                "id_product" => 3,
+                "discount" => 0,
+                "quantity" => 1,
+            ],
+            [
+                "id_order" => 4,
+                "id_product" => 4,
+                "discount" => 50000,
+                "quantity" => 2,
+            ],
+            [
+                "id_order" => 2,
+                "id_product" => 5,
+                "discount" => 0,
+                "quantity" => 1,
+            ],
+            [
+                "id_order" => 5,
+                "id_product" => 6,
+                "discount" => 20000,
+                "quantity" => 1,
+            ],
+        ]);
+
         // \App\Models\User=>=>factory(10)->create();
 
         // \App\Models\User=>=>factory()->create([
