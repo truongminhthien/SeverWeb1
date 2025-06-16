@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id('id_category');
             $table->string('category_name');
+            $table->integer('id_parent')->default(0);
+            $table->string('slug')->unique();
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->timestamps();
         });

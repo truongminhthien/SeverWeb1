@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Category::insert([
+
+        $categories = [
             [
                 'category_name' => 'Thời Trang',
                 'status' => 'active',
@@ -39,7 +40,184 @@ class DatabaseSeeder extends Seeder
                 'category_name' => 'Trang Điểm',
                 'status' => 'inactive',
             ],
-        ]);
+            [
+                'category_name' => 'Túi xách Chanel',
+                'status' => 'active',
+                'id_parent' => 1,
+            ],
+            [
+                'category_name' => 'Giày dép Chanel',
+                'status' => 'active',
+                'id_parent' => 1,
+            ],
+            [
+                'category_name' => 'Áo khoác Chanel',
+                'status' => 'active',
+                'id_parent' => 1,
+            ],
+            // Nước Hoa
+            [
+                'category_name' => 'Nước hoa nữ Chanel',
+                'status' => 'active',
+                'id_parent' => 2,
+            ],
+            [
+                'category_name' => 'Nước hoa nam Chanel',
+                'status' => 'active',
+                'id_parent' => 2,
+            ],
+            [
+                'category_name' => 'Nước hoa unisex Chanel',
+                'status' => 'active',
+                'id_parent' => 2,
+            ],
+            // Đồng Hồ
+            [
+                'category_name' => 'Đồng hồ nữ Chanel',
+                'status' => 'active',
+                'id_parent' => 3,
+            ],
+            [
+                'category_name' => 'Đồng hồ nam Chanel',
+                'status' => 'active',
+                'id_parent' => 3,
+            ],
+            [
+                'category_name' => 'Đồng hồ unisex Chanel',
+                'status' => 'active',
+                'id_parent' => 3,
+            ],
+            // Mắt Kính
+            [
+                'category_name' => 'Kính mát nữ Chanel',
+                'status' => 'active',
+                'id_parent' => 4,
+            ],
+            [
+                'category_name' => 'Kính mát nam Chanel',
+                'status' => 'active',
+                'id_parent' => 4,
+            ],
+            [
+                'category_name' => 'Kính mát unisex Chanel',
+                'status' => 'active',
+                'id_parent' => 4,
+            ],
+            // Trang Sức
+            [
+                'category_name' => 'Vòng cổ Chanel',
+                'status' => 'inactive',
+                'id_parent' => 5,
+            ],
+            [
+                'category_name' => 'Nhẫn Chanel',
+                'status' => 'inactive',
+                'id_parent' => 5,
+            ],
+            // Trang Điểm
+            [
+                'category_name' => 'Son môi Chanel',
+                'status' => 'inactive',
+                'id_parent' => 6,
+            ],
+            [
+                'category_name' => 'Phấn nền Chanel',
+                'status' => 'inactive',
+                'id_parent' => 6,
+            ],
+        ];
+        foreach ($categories as $category) {
+            Category::create($category);
+        }
+
+        // Category::created([
+        //     // Thời Trang
+        //     [
+        //         'category_name' => 'Túi xách Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 1,
+        //     ],
+        //     [
+        //         'category_name' => 'Giày dép Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 1,
+        //     ],
+        //     [
+        //         'category_name' => 'Áo khoác Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 1,
+        //     ],
+        //     // Nước Hoa
+        //     [
+        //         'category_name' => 'Nước hoa nữ Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 2,
+        //     ],
+        //     [
+        //         'category_name' => 'Nước hoa nam Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 2,
+        //     ],
+        //     [
+        //         'category_name' => 'Nước hoa unisex Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 2,
+        //     ],
+        //     // Đồng Hồ
+        //     [
+        //         'category_name' => 'Đồng hồ nữ Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 3,
+        //     ],
+        //     [
+        //         'category_name' => 'Đồng hồ nam Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 3,
+        //     ],
+        //     [
+        //         'category_name' => 'Đồng hồ unisex Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 3,
+        //     ],
+        //     // Mắt Kính
+        //     [
+        //         'category_name' => 'Kính mát nữ Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 4,
+        //     ],
+        //     [
+        //         'category_name' => 'Kính mát nam Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 4,
+        //     ],
+        //     [
+        //         'category_name' => 'Kính mát unisex Chanel',
+        //         'status' => 'active',
+        //         'id_parent' => 4,
+        //     ],
+        //     // Trang Sức
+        //     [
+        //         'category_name' => 'Vòng cổ Chanel',
+        //         'status' => 'inactive',
+        //         'id_parent' => 5,
+        //     ],
+        //     [
+        //         'category_name' => 'Nhẫn Chanel',
+        //         'status' => 'inactive',
+        //         'id_parent' => 5,
+        //     ],
+        //     // Trang Điểm
+        //     [
+        //         'category_name' => 'Son môi Chanel',
+        //         'status' => 'inactive',
+        //         'id_parent' => 6,
+        //     ],
+        //     [
+        //         'category_name' => 'Phấn nền Chanel',
+        //         'status' => 'inactive',
+        //         'id_parent' => 6,
+        //     ],
+        // ]);
 
 
         \App\Models\User::insert(
@@ -65,9 +243,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Product::insert([
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm",
-                "image" => "j12-bleu-watch-caliber-12-2-33-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10309-9568362102814",
+                "image" => "wristwatch/j12-bleu-watch-caliber-12-2-33-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10309-9568362102814.jpg",
                 "price" => 370322267,
                 "rating" => 4,
                 "gender" => "Unisex",
@@ -78,9 +256,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 14, // Đồng hồ nam Chanel
                 "name" => "Chanel J12 Bleu Watch 38mm",
-                "image" => "9568364527646",
+                "image" => "wristwatch/9568364527646.jpg",
                 "price" => 211620643,
                 "rating" => 5,
                 "gender" => "Unisex",
@@ -91,9 +269,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel J12 Bleu Watch 33mm",
-                "image" => "9568365805598",
+                "image" => "wristwatch/9568365805598.jpg",
                 "price" => 300988017,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -104,9 +282,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 15, // Đồng hồ unisex Chanel
                 "name" => "Chanel J12 Bleu Watch Caliber 12.1 38mm",
-                "image" => "j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-dos-h10310-9568362463262",
+                "image" => "wristwatch/j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-dos-h10310-9568362463262.jpg",
                 "price" => 339544137,
                 "rating" => 3,
                 "gender" => "Nam",
@@ -117,9 +295,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 14, // Đồng hồ nam Chanel
                 "name" => "Chanel J12 Bleu Watch Caliber 12.1 38mm",
-                "image" => "j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10310-9568363118622",
+                "image" => "wristwatch/j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10310-9568363118622.jpg",
                 "price" => 300823454,
                 "rating" => 5,
                 "gender" => "Nam",
@@ -130,9 +308,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm Diamond",
-                "image" => "j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-default-h9657-9570157920286",
+                "image" => "wristwatch/j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-default-h9657-9570157920286.jpg",
                 "price" => 463842891,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -143,9 +321,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm Diamond",
-                "image" => "j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-dos-h9657-9568362168350",
+                "image" => "wristwatch/j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-dos-h9657-9568362168350.jpg",
                 "price" => 326820872,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -156,9 +334,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Code Coco Watch Black Ceramic",
-                "image" => "code-coco-watch-black-black-ceramic-steel-diamond-packshot-default-h5148-9564284059678",
+                "image" => "wristwatch/code-coco-watch-black-black-ceramic-steel-diamond-packshot-default-h5148-9564284059678.jpg",
                 "price" => 394221985,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -169,9 +347,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Code Coco Watch Black Ceramic",
-                "image" => "code-coco-watch-black-black-ceramic-steel-diamond-packshot-other-h5148-8828925378590",
+                "image" => "wristwatch/code-coco-watch-black-black-ceramic-steel-diamond-packshot-other-h5148-8828925378590.jpg",
                 "price" => 350239578,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -182,9 +360,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Code Coco Leather Watch Silver",
-                "image" => "code-coco-leather-watch-silver-black-steel-diamond-calfskin-packshot-default-h6208-9564290285598",
+                "image" => "wristwatch/code-coco-leather-watch-silver-black-steel-diamond-calfskin-packshot-default-h6208-9564290285598.jpg",
                 "price" => 483122978,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -195,9 +373,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Code Coco So Black Watch",
-                "image" => "code-coco-so-black-watch-black-matte-black-ceramic-steel-diamond-packshot-default-h6426-9564229500958",
+                "image" => "wristwatch/code-coco-so-black-watch-black-matte-black-ceramic-steel-diamond-packshot-default-h6426-9564229500958.jpg",
                 "price" => 163317225,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -208,9 +386,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Code Coco Watch Black Steel",
-                "image" => "code-coco-watch-black-steel-black-ceramic-diamond-packshot-default-h6027-8825232359454",
+                "image" => "wristwatch/code-coco-watch-black-steel-black-ceramic-diamond-packshot-default-h6027-8825232359454.jpg",
                 "price" => 443314743,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -221,9 +399,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Boy·Friend Skeleton Watch Beige Gold",
-                "image" => "boy-friend-skeleton-watch-beige-beige-gold-diamond-calfskin-packshot-default-h6949-9570157723678",
+                "image" => "wristwatch/boy-friend-skeleton-watch-beige-beige-gold-diamond-calfskin-packshot-default-h6949-9570157723678.jpg",
                 "price" => 149720049,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -234,9 +412,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Boy·Friend Watch Silver White Gold",
-                "image" => "boy-friend-watch-silver-white-gold-diamond-calfskin-packshot-default-h6674-9564215738398",
+                "image" => "wristwatch/boy-friend-watch-silver-white-gold-diamond-calfskin-packshot-default-h6674-9564215738398.jpg",
                 "price" => 111837711,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -247,9 +425,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel Code Coco Watch Beige Gold",
-                "image" => "code-coco-watch-beige-beige-gold-diamond-packshot-default-h5146-8825229705246",
+                "image" => "wristwatch/code-coco-watch-beige-beige-gold-diamond-packshot-default-h5146-8825229705246.jpg",
                 "price" => 140072986,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -260,9 +438,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel J12 Baguette Diamond Bezel Watch Caliber 12.2 33mm",
-                "image" => "j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-default-h7430-9563849031710",
+                "image" => "wristwatch/j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-default-h7430-9563849031710.jpg",
                 "price" => 220123909,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -273,9 +451,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 3,
+                "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel J12 Baguette Diamond Bezel Watch Caliber 12.2 33mm",
-                "image" => "j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-dos-h7430-9563848081438",
+                "image" => "wristwatch/j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-dos-h7430-9563848081438.jpg",
                 "price" => 258823355,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -289,9 +467,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Product::insert([
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Nước hoa Chanel No.5",
-                "image" => "perfume1.jpg",
+                "image" => "perfume/perfume1.jpg",
                 "price" => 2450000,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -302,9 +480,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 11, // Nước hoa nam Chanel
                 "name" => "Dior Sauvage Eau de Parfum",
-                "image" => "perfume2.jpg",
+                "image" => "perfume/perfume2.jpg",
                 "price" => 3150000,
                 "rating" => 4,
                 "gender" => "Nam",
@@ -315,9 +493,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Gucci Bloom",
-                "image" => "perfume3.jpg",
+                "image" => "perfume/perfume3.jpg",
                 "price" => 2800000,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -328,9 +506,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 11, // Nước hoa nam Chanel
                 "name" => "Versace Eros",
-                "image" => "perfume4.jpg",
+                "image" => "perfume/perfume4.jpg",
                 "price" => 2900000,
                 "rating" => 4,
                 "gender" => "Nam",
@@ -341,9 +519,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "YSL Libre",
-                "image" => "perfume5.jpg",
+                "image" => "perfume/perfume5.jpg",
                 "price" => 3200000,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -354,9 +532,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 12, // Nước hoa unisex Chanel
                 "name" => "CK One",
-                "image" => "perfume6.jpg",
+                "image" => "perfume/perfume6.jpg",
                 "price" => 1950000,
                 "rating" => 3,
                 "gender" => "Unisex",
@@ -367,9 +545,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Burberry Her",
-                "image" => "perfume7.jpg",
+                "image" => "perfume/perfume7.jpg",
                 "price" => 2600000,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -380,9 +558,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 12, // Nước hoa unisex Chanel
                 "name" => "Tom Ford Black Orchid",
-                "image" => "perfume8.jpg",
+                "image" => "perfume/perfume8.jpg",
                 "price" => 4300000,
                 "rating" => 5,
                 "gender" => "Unisex",
@@ -393,9 +571,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Marc Jacobs Daisy",
-                "image" => "perfume9.jpg",
+                "image" => "perfume/perfume9.jpg",
                 "price" => 2750000,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -406,9 +584,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Lancome La Vie Est Belle",
-                "image" => "perfume10.jpg",
+                "image" => "perfume/perfume10.jpg",
                 "price" => 3000000,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -419,9 +597,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Jo Malone Peony & Blush Suede",
-                "image" => "perfume11.jpg",
+                "image" => "perfume/perfume11.jpg",
                 "price" => 4000000,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -432,9 +610,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 11, // Nước hoa nam Chanel
                 "name" => "Bvlgari Man in Black",
-                "image" => "perfume12.jpg",
+                "image" => "perfume/perfume12.jpg",
                 "price" => 3150000,
                 "rating" => 5,
                 "gender" => "Nam",
@@ -445,9 +623,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Dolce & Gabbana Light Blue",
-                "image" => "perfume13.jpg",
+                "image" => "perfume/perfume13.jpg",
                 "price" => 2400000,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -458,9 +636,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Givenchy L’Interdit",
-                "image" => "perfume14.jpg",
+                "image" => "perfume/perfume14.jpg",
                 "price" => 3100000,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -471,9 +649,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Armani My Way",
-                "image" => "perfume15.jpg",
+                "image" => "perfume/perfume15.jpg",
                 "price" => 3500000,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -484,9 +662,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Kenzo Flower",
-                "image" => "perfume16.jpg",
+                "image" => "perfume/perfume16.jpg",
                 "price" => 2200000,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -497,9 +675,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Narciso Rodriguez for Her",
-                "image" => "perfume17.jpg",
+                "image" => "perfume/perfume17.jpg",
                 "price" => 3800000,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -510,9 +688,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Hermès Twilly",
-                "image" => "perfume18.jpg",
+                "image" => "perfume/perfume18.jpg",
                 "price" => 3350000,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -523,9 +701,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 11, // Nước hoa nam Chanel
                 "name" => "Montblanc Explorer",
-                "image" => "perfume19.jpg",
+                "image" => "perfume/perfume19.jpg",
                 "price" => 2900000,
                 "rating" => 4,
                 "gender" => "Nam",
@@ -536,9 +714,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active",
             ],
             [
-                "id_category" => 2,
+                "id_category" => 10, // Nước hoa nữ Chanel
                 "name" => "Viktor & Rolf Flowerbomb",
-                "image" => "perfume20.jpg",
+                "image" => "perfume/perfume20.jpg",
                 "price" => 4100000,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -552,9 +730,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Product::insert([
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Rectangle Sunglasses Black Acetate & Calfskin",
-                "image" => "rectangle-sunglasses-black-acetate-calfskin-acetate-calfskin-packshot-default-a71716x02153s2228-9567932022814",
+                "image" => "classes/rectangle-sunglasses-black-acetate-calfskin-acetate-calfskin-packshot-default-a71716x02153s2228-9567932022814.jpg",
                 "price" => 3740045,
                 "rating" => 4,
                 "gender" => "Unisex",
@@ -565,9 +743,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Rectangle Sunglasses Black & Gold Acetate",
-                "image" => "rectangle-sunglasses-black-gold-acetate-acetate-packshot-default-a71377x08101s2216-8853782790174",
+                "image" => "classes/rectangle-sunglasses-black-gold-acetate-acetate-packshot-default-a71377x08101s2216-8853782790174.jpg",
                 "price" => 24675613,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -578,9 +756,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Cat Eye Sunglasses White Acetate & Glass Pearls",
-                "image" => "cat-eye-sunglasses-white-acetate-glass-pearls-acetate-glass-pearls-packshot-default-a71491x08222s5512-9516163104798",
+                "image" => "classes/cat-eye-sunglasses-white-acetate-glass-pearls-acetate-glass-pearls-packshot-default-a71491x08222s5512-9516163104798.jpg",
                 "price" => 30825302,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -591,9 +769,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 18, // Kính mát unisex Chanel
                 "name" => "Square Sunglasses Black Acetate",
-                "image" => "square-sunglasses-black-acetate-acetate-packshot-extra-a71305x08101s2214-8853776203806",
+                "image" => "classes/square-sunglasses-black-acetate-acetate-packshot-extra-a71305x08101s2214-8853776203806.jpg",
                 "price" => 35565985,
                 "rating" => 5,
                 "gender" => "Unisex",
@@ -604,9 +782,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Cat Eye Sunglasses Black Acetate & Metal",
-                "image" => "cat-eye-sunglasses-black-acetate-metal-acetate-metal-packshot-default-a71710x06081s2216-9558779789342",
+                "image" => "classes/cat-eye-sunglasses-black-acetate-metal-acetate-metal-packshot-default-a71710x06081s2216-9558779789342.jpg",
                 "price" => 33975021,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -617,9 +795,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Butterfly Sunglasses Black Acetate & Metal",
-                "image" => "butterfly-sunglasses-black-acetate-metal-acetate-metal-packshot-other-a71711x06081s2216-9558780280862",
+                "image" => "classes/butterfly-sunglasses-black-acetate-metal-acetate-metal-packshot-other-a71711x06081s2216-9558780280862.jpg",
                 "price" => 30689476,
                 "rating" => 5,
                 "gender" => "Nữ",
@@ -630,9 +808,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 18, // Kính mát unisex Chanel
                 "name" => "Round Sunglasses Gold & Black Metal Calfskin",
-                "image" => "round-sunglasses-gold-black-metal-calfskin-metal-calfskin-packshot-extra-a71384x27388l3953-8853784100894",
+                "image" => "classes/round-sunglasses-gold-black-metal-calfskin-metal-calfskin-packshot-extra-a71384x27388l3953-8853784100894.jpg",
                 "price" => 44471385,
                 "rating" => 4,
                 "gender" => "Unisex",
@@ -643,9 +821,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Oval Sunglasses Black Nylon & Metal Leather",
-                "image" => "oval-sunglasses-black-nylon-metal-leather-nylon-metal-leather-packshot-default-a71713x06023s0116-9558780117022",
+                "image" => "classes/oval-sunglasses-black-nylon-metal-leather-nylon-metal-leather-packshot-default-a71713x06023s0116-9558780117022.jpg",
                 "price" => 39587638,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -656,9 +834,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Square Sunglasses Coral Nylon",
-                "image" => "square-sunglasses-coral-nylon-nylon-packshot-default-a71692x02081s0714-9558780411934",
+                "image" => "classes/square-sunglasses-coral-nylon-nylon-packshot-default-a71692x02081s0714-9558780411934.jpg",
                 "price" => 44170299,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -669,9 +847,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Cat Eye Sunglasses Black Acetate & Strass",
-                "image" => "cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-extra-a71667x02569s2216-9550223802398",
+                "image" => "classes/cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-extra-a71667x02569s2216-9550223802398.jpg",
                 "price" => 6117802,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -682,9 +860,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Cat Eye Sunglasses Black Acetate & Strass",
-                "image" => "cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71668x02569s2216-9550229897246",
+                "image" => "classes/cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71668x02569s2216-9550229897246.jpg",
                 "price" => 34693608,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -695,9 +873,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Cat Eye Sunglasses Black Acetate & Strass",
-                "image" => "cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71669x02569s2287-9550231666718",
+                "image" => "classes/cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71669x02569s2287-9550231666718.jpg",
                 "price" => 45781576,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -708,9 +886,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Rectangle Sunglasses Red Acetate",
-                "image" => "rectangle-sunglasses-red-acetate-acetate-packshot-other-a71649x08101s7911-9546504831006",
+                "image" => "classes/rectangle-sunglasses-red-acetate-acetate-packshot-other-a71649x08101s7911-9546504831006.jpg",
                 "price" => 1504700,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -721,9 +899,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Square Sunglasses Gold Metal Calfskin Denim",
-                "image" => "square-sunglasses-gold-metal-calfskin-denim-metal-calfskin-denim-packshot-default-a71693x02609l8819-9563891793950",
+                "image" => "classes/square-sunglasses-gold-metal-calfskin-denim-metal-calfskin-denim-packshot-default-a71693x02609l8819-9563891793950.jpg",
                 "price" => 7636831,
                 "rating" => 4,
                 "gender" => "Nữ",
@@ -734,9 +912,9 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ],
             [
-                "id_category" => 4,
+                "id_category" => 16, // Kính mát nữ Chanel
                 "name" => "Square Sunglasses Off White Acetate Tweed Leather",
-                "image" => "square-sunglasses-off-white-acetate-tweed-leather-acetate-tweed-leather-packshot-default-a71652x22002s8761-9546504667166",
+                "image" => "classes/square-sunglasses-off-white-acetate-tweed-leather-acetate-tweed-leather-packshot-default-a71652x22002s8761-9546504667166.jpg",
                 "price" => 15928583,
                 "rating" => 3,
                 "gender" => "Nữ",
@@ -845,6 +1023,430 @@ class DatabaseSeeder extends Seeder
                 "quantity" => 1,
             ],
         ]);
+
+        //Đồng hồ Chanel
+        // \App\Models\Product::insert([
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm",
+        //         "image" => "j12-bleu-watch-caliber-12-2-33-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10309-9568362102814",
+        //         "price" => 370322267,
+        //         "rating" => 4,
+        //         "gender" => "Unisex",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Đồng hồ Chanel J12 Bleu 33mm, chất liệu ceramic xanh mờ, bộ máy Caliber 12.2, thiết kế sang trọng và hiện đại.",
+        //         "note" => "Chống nước 50m, kính sapphire, dây ceramic",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Bleu Watch 38mm",
+        //         "image" => "9568364527646",
+        //         "price" => 211620643,
+        //         "rating" => 5,
+        //         "gender" => "Unisex",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Chanel J12 Bleu 38mm, thiết kế mạnh mẽ, phù hợp cho cả nam và nữ, chất liệu ceramic cao cấp.",
+        //         "note" => "Chống nước 100m, kính sapphire, dây ceramic",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Bleu Watch 33mm",
+        //         "image" => "9568365805598",
+        //         "price" => 300988017,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Đồng hồ Chanel J12 Bleu 33mm, thiết kế thanh lịch, phù hợp cho nữ giới, ceramic xanh mờ.",
+        //         "note" => "Chống nước 50m, kính sapphire",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Bleu Watch Caliber 12.1 38mm",
+        //         "image" => "j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-dos-h10310-9568362463262",
+        //         "price" => 339544137,
+        //         "rating" => 3,
+        //         "gender" => "Nam",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Chanel J12 Bleu 38mm, bộ máy Caliber 12.1, thiết kế thể thao, ceramic xanh mờ.",
+        //         "note" => "Chống nước 100m, kính sapphire",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Bleu Watch Caliber 12.1 38mm",
+        //         "image" => "j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10310-9568363118622",
+        //         "price" => 300823454,
+        //         "rating" => 5,
+        //         "gender" => "Nam",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Chanel J12 Bleu 38mm, bộ máy Caliber 12.1, thiết kế mạnh mẽ, ceramic xanh mờ.",
+        //         "note" => "Chống nước 100m, kính sapphire",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm Diamond",
+        //         "image" => "j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-default-h9657-9570157920286",
+        //         "price" => 463842891,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Chanel J12 Bleu 33mm, đính kim cương, bộ máy Caliber 12.2, ceramic xanh mờ.",
+        //         "note" => "Chống nước 50m, kính sapphire, kim cương thiên nhiên",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm Diamond",
+        //         "image" => "j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-dos-h9657-9568362168350",
+        //         "price" => 326820872,
+        //         "rating" => 5,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Chanel J12 Bleu 33mm, đính kim cương, thiết kế sang trọng, ceramic xanh mờ.",
+        //         "note" => "Chống nước 50m, kính sapphire, kim cương thiên nhiên",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Code Coco Watch Black Ceramic",
+        //         "image" => "code-coco-watch-black-black-ceramic-steel-diamond-packshot-default-h5148-9564284059678",
+        //         "price" => 394221985,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Chanel Code Coco, ceramic đen, đính kim cương, thiết kế độc đáo, hiện đại.",
+        //         "note" => "Chống nước 30m, kính sapphire, kim cương thiên nhiên",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Code Coco Watch Black Ceramic",
+        //         "image" => "code-coco-watch-black-black-ceramic-steel-diamond-packshot-other-h5148-8828925378590",
+        //         "price" => 350239578,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Chanel Code Coco, ceramic đen, đính kim cương, phong cách thời thượng.",
+        //         "note" => "Chống nước 30m, kính sapphire, kim cương thiên nhiên",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Code Coco Leather Watch Silver",
+        //         "image" => "code-coco-leather-watch-silver-black-steel-diamond-calfskin-packshot-default-h6208-9564290285598",
+        //         "price" => 483122978,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Chanel Code Coco, dây da bê, mặt bạc, đính kim cương, thiết kế thanh lịch.",
+        //         "note" => "Chống nước 30m, kính sapphire, dây da bê",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Code Coco So Black Watch",
+        //         "image" => "code-coco-so-black-watch-black-matte-black-ceramic-steel-diamond-packshot-default-h6426-9564229500958",
+        //         "price" => 163317225,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Chanel Code Coco So Black, ceramic đen mờ, đính kim cương, cá tính và hiện đại.",
+        //         "note" => "Chống nước 30m, kính sapphire, kim cương thiên nhiên",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Code Coco Watch Black Steel",
+        //         "image" => "code-coco-watch-black-steel-black-ceramic-diamond-packshot-default-h6027-8825232359454",
+        //         "price" => 443314743,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Chanel Code Coco, thép không gỉ, ceramic đen, đính kim cương, thiết kế sang trọng.",
+        //         "note" => "Chống nước 30m, kính sapphire, kim cương thiên nhiên",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Boy·Friend Skeleton Watch Beige Gold",
+        //         "image" => "boy-friend-skeleton-watch-beige-beige-gold-diamond-calfskin-packshot-default-h6949-9570157723678",
+        //         "price" => 149720049,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Manual",
+        //         "description" => "Chanel Boy·Friend Skeleton, vàng beige, dây da bê, thiết kế lộ máy, đính kim cương.",
+        //         "note" => "Chống nước 30m, kính sapphire, dây da bê",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Boy·Friend Watch Silver White Gold",
+        //         "image" => "boy-friend-watch-silver-white-gold-diamond-calfskin-packshot-default-h6674-9564215738398",
+        //         "price" => 111837711,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Chanel Boy·Friend, vàng trắng, dây da bê, đính kim cương, thiết kế thanh lịch.",
+        //         "note" => "Chống nước 30m, kính sapphire, dây da bê",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel Code Coco Watch Beige Gold",
+        //         "image" => "code-coco-watch-beige-beige-gold-diamond-packshot-default-h5146-8825229705246",
+        //         "price" => 140072986,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Quartz",
+        //         "description" => "Chanel Code Coco, vàng beige, đính kim cương, thiết kế sang trọng, nữ tính.",
+        //         "note" => "Chống nước 30m, kính sapphire, kim cương thiên nhiên",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Baguette Diamond Bezel Watch Caliber 12.2 33mm",
+        //         "image" => "j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-default-h7430-9563849031710",
+        //         "price" => 220123909,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Chanel J12 Baguette Diamond Bezel, 33mm, ceramic trắng, vàng trắng, đính kim cương baguette.",
+        //         "note" => "Chống nước 50m, kính sapphire, kim cương baguette",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 3,
+        //         "name" => "Chanel J12 Baguette Diamond Bezel Watch Caliber 12.2 33mm",
+        //         "image" => "j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-dos-h7430-9563848081438",
+        //         "price" => 258823355,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Automatic",
+        //         "description" => "Chanel J12 Baguette Diamond Bezel, 33mm, ceramic trắng, vàng trắng, đính kim cương baguette.",
+        //         "note" => "Chống nước 50m, kính sapphire, kim cương baguette",
+        //         "status" => "active"
+        //     ]
+        // ]);
+        //Mắt kính Chanel
+        // \App\Models\Product::insert([
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Rectangle Sunglasses Black Acetate & Calfskin",
+        //         "image" => "rectangle-sunglasses-black-acetate-calfskin-acetate-calfskin-packshot-default-a71716x02153s2228-9567932022814",
+        //         "price" => 3740045,
+        //         "rating" => 4,
+        //         "gender" => "Unisex",
+        //         "volume" => null,
+        //         "type" => "Acetate, Calfskin",
+        //         "description" => "Kính mát Chanel dáng chữ nhật, chất liệu acetate đen phối da bê, thiết kế hiện đại, sang trọng.",
+        //         "note" => "Chống tia UV, phù hợp nhiều khuôn mặt",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Rectangle Sunglasses Black & Gold Acetate",
+        //         "image" => "rectangle-sunglasses-black-gold-acetate-acetate-packshot-default-a71377x08101s2216-8853782790174",
+        //         "price" => 24675613,
+        //         "rating" => 5,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate",
+        //         "description" => "Kính mát Chanel dáng chữ nhật, phối màu đen và vàng, chất liệu acetate cao cấp.",
+        //         "note" => "Gọng nhẹ, chống chói tốt",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Cat Eye Sunglasses White Acetate & Glass Pearls",
+        //         "image" => "cat-eye-sunglasses-white-acetate-glass-pearls-acetate-glass-pearls-packshot-default-a71491x08222s5512-9516163104798",
+        //         "price" => 30825302,
+        //         "rating" => 5,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate, Glass Pearls",
+        //         "description" => "Kính mát Chanel mắt mèo, màu trắng, điểm xuyết ngọc trai thủy tinh sang trọng.",
+        //         "note" => "Phong cách nữ tính, thời trang",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Square Sunglasses Black Acetate",
+        //         "image" => "square-sunglasses-black-acetate-acetate-packshot-extra-a71305x08101s2214-8853776203806",
+        //         "price" => 35565985,
+        //         "rating" => 5,
+        //         "gender" => "Unisex",
+        //         "volume" => null,
+        //         "type" => "Acetate",
+        //         "description" => "Kính mát Chanel dáng vuông, chất liệu acetate đen, phù hợp cả nam và nữ.",
+        //         "note" => "Thiết kế cổ điển, dễ phối đồ",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Cat Eye Sunglasses Black Acetate & Metal",
+        //         "image" => "cat-eye-sunglasses-black-acetate-metal-acetate-metal-packshot-default-a71710x06081s2216-9558779789342",
+        //         "price" => 33975021,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate, Metal",
+        //         "description" => "Kính mát Chanel mắt mèo, gọng đen phối kim loại, phong cách cá tính.",
+        //         "note" => "Chống tia UV, phù hợp mặt trái xoan",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Butterfly Sunglasses Black Acetate & Metal",
+        //         "image" => "butterfly-sunglasses-black-acetate-metal-acetate-metal-packshot-other-a71711x06081s2216-9558780280862",
+        //         "price" => 30689476,
+        //         "rating" => 5,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate, Metal",
+        //         "description" => "Kính mát Chanel dáng bướm, gọng đen phối kim loại, tạo điểm nhấn nổi bật.",
+        //         "note" => "Phong cách sang trọng, nữ tính",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Round Sunglasses Gold & Black Metal Calfskin",
+        //         "image" => "round-sunglasses-gold-black-metal-calfskin-metal-calfskin-packshot-extra-a71384x27388l3953-8853784100894",
+        //         "price" => 44471385,
+        //         "rating" => 4,
+        //         "gender" => "Unisex",
+        //         "volume" => null,
+        //         "type" => "Metal, Calfskin",
+        //         "description" => "Kính mát Chanel tròn, phối màu vàng đen, gọng kim loại bọc da bê cao cấp.",
+        //         "note" => "Phong cách retro, phù hợp nhiều khuôn mặt",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Oval Sunglasses Black Nylon & Metal Leather",
+        //         "image" => "oval-sunglasses-black-nylon-metal-leather-nylon-metal-leather-packshot-default-a71713x06023s0116-9558780117022",
+        //         "price" => 39587638,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Nylon, Metal, Leather",
+        //         "description" => "Kính mát Chanel oval, gọng nylon đen phối kim loại và da, thiết kế thanh lịch.",
+        //         "note" => "Chống tia UV, nhẹ và bền",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Square Sunglasses Coral Nylon",
+        //         "image" => "square-sunglasses-coral-nylon-nylon-packshot-default-a71692x02081s0714-9558780411934",
+        //         "price" => 44170299,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Nylon",
+        //         "description" => "Kính mát Chanel vuông, màu cam san hô, chất liệu nylon trẻ trung.",
+        //         "note" => "Phong cách năng động, phù hợp mùa hè",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Cat Eye Sunglasses Black Acetate & Strass",
+        //         "image" => "cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-extra-a71667x02569s2216-9550223802398",
+        //         "price" => 6117802,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate, Strass",
+        //         "description" => "Kính mát Chanel mắt mèo, gọng đen đính đá strass lấp lánh.",
+        //         "note" => "Tạo điểm nhấn nổi bật, thời trang",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Cat Eye Sunglasses Black Acetate & Strass",
+        //         "image" => "cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71668x02569s2216-9550229897246",
+        //         "price" => 34693608,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate, Strass",
+        //         "description" => "Kính mát Chanel mắt mèo, gọng đen đính đá strass, phong cách sang trọng.",
+        //         "note" => "Chống tia UV, phù hợp dự tiệc",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Cat Eye Sunglasses Black Acetate & Strass",
+        //         "image" => "cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71669x02569s2287-9550231666718",
+        //         "price" => 45781576,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate, Strass",
+        //         "description" => "Kính mát Chanel mắt mèo, gọng đen đính đá strass, thiết kế tinh tế.",
+        //         "note" => "Phong cách quý phái, bảo vệ mắt tối ưu",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Rectangle Sunglasses Red Acetate",
+        //         "image" => "rectangle-sunglasses-red-acetate-acetate-packshot-other-a71649x08101s7911-9546504831006",
+        //         "price" => 1504700,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate",
+        //         "description" => "Kính mát Chanel dáng chữ nhật, màu đỏ nổi bật, chất liệu acetate.",
+        //         "note" => "Phong cách trẻ trung, cá tính",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Square Sunglasses Gold Metal Calfskin Denim",
+        //         "image" => "square-sunglasses-gold-metal-calfskin-denim-metal-calfskin-denim-packshot-default-a71693x02609l8819-9563891793950",
+        //         "price" => 7636831,
+        //         "rating" => 4,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Metal, Calfskin, Denim",
+        //         "description" => "Kính mát Chanel vuông, phối vàng, da bê và denim, thiết kế độc đáo.",
+        //         "note" => "Chống tia UV, phong cách cá tính",
+        //         "status" => "active"
+        //     ],
+        //     [
+        //         "id_category" => 4,
+        //         "name" => "Square Sunglasses Off White Acetate Tweed Leather",
+        //         "image" => "square-sunglasses-off-white-acetate-tweed-leather-acetate-tweed-leather-packshot-default-a71652x22002s8761-9546504667166",
+        //         "price" => 15928583,
+        //         "rating" => 3,
+        //         "gender" => "Nữ",
+        //         "volume" => null,
+        //         "type" => "Acetate, Tweed, Leather",
+        //         "description" => "Kính mát Chanel vuông, màu trắng ngà, phối tweed và da, phong cách thanh lịch.",
+        //         "note" => "Thiết kế sang trọng, phù hợp nhiều dịp",
+        //         "status" => "active"
+        //     ]
+        // ]);
+
 
         // \App\Models\User=>=>factory(10)->create();
 

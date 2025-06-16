@@ -49,6 +49,121 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Create a new category (auto slug)",
+                "operationId": "d7469ab46156d0c747c7376d4c936df0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category_name"
+                                ],
+                                "properties": {
+                                    "category_name": {
+                                        "type": "string",
+                                        "example": "Nước Hoa"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/subcategories": {
+            "post": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Create a new subcategory",
+                "operationId": "fe57e0c7f14d163999104be706bfd481",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category_name",
+                                    "id_category"
+                                ],
+                                "properties": {
+                                    "category_name": {
+                                        "type": "string",
+                                        "example": "Nước hoa nữ Chanel"
+                                    },
+                                    "id_category": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Subcategory created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
             }
         },
         "/api/featured-products": {
@@ -125,6 +240,98 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/api/products-by-subcategory/{id_subcategory}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get products by category id_subcategory",
+                "operationId": "dfca5113f12c0544bd84658de9f9a33a",
+                "parameters": [
+                    {
+                        "name": "id_subcategory",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of products by category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Product"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No products found"
+                    }
+                }
+            }
+        },
+        "/api/products-by-category/{id_category}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get all products of category (all child categories included)",
+                "operationId": "d1c616fa8ac43038cb590a56338488e1",
+                "parameters": [
+                    {
+                        "name": "id_category",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of products by category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Product"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No products found"
                     }
                 }
             }

@@ -33,8 +33,12 @@ Route::get('/order-history/{id}', [UserController::class, 'orderHistory']);
 use App\Http\Controllers\API\CategoryController;
 
 Route::get('/categories', [CategoryController::class, 'allCategory']);
+Route::post('/categories', [CategoryController::class, 'createCategory']);
+Route::post('/subcategories', [CategoryController::class, 'createSubCategory']);
 
 use App\Http\Controllers\API\ProductController;
 
 Route::get('/featured-products', [ProductController::class, 'featuredProduct']);
 Route::get('/new-products', [ProductController::class, 'newProduct']);
+Route::get('/products-by-subcategory/{id_subcategory}', [ProductController::class, 'productsBySubCategory']);
+Route::get('/products-by-category/{id_category}', [ProductController::class, 'getProductsByCategory']);

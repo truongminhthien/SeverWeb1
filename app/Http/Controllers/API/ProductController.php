@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 /**
  * @OA\Schema(
@@ -67,12 +68,19 @@ class ProductController extends Controller
             ->where('status', 'active')
             ->limit(20)
             ->get();
+
         if ($products->isEmpty()) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No featured products found'
             ], 404);
         } else {
+            $products->transform(function ($product) {
+                if ($product->image) {
+                    $product->image = url('images/' . $product->image);
+                }
+                return $product;
+            });
             return response()->json([
                 'status' => 'success',
                 'data' => $products
@@ -104,9 +112,133 @@ class ProductController extends Controller
                 'message' => 'No new products found'
             ], 404);
         } else {
+            $products->transform(function ($product) {
+                if ($product->image) {
+                    $product->image = url('images/' . $product->image);
+                }
+                return $product;
+            });
             return response()->json([
                 'status' => 'success',
                 'data' => $products
+            ], 200);
+        }
+    }
+
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/products-by-subcategory/{id_subcategory}",
+     *     tags={"Product"},
+     *     summary="Get products by category id_subcategory",
+     *     @OA\Parameter(
+     *         name="id_subcategory",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of products by category",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Product")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No products found"
+     *     )
+     * )
+     */
+    public function productsBySubCategory($id_subcategory)
+    {
+        $products = Product::where('id_category', $id_subcategory)->with('category')
+            ->where('status', 'active')
+            ->get();
+
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'No products found'
+            ], 404);
+        } else {
+            $products->transform(function ($product) {
+                if ($product->image) {
+                    $product->image = url('images/' . $product->image);
+                }
+                return $product;
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $products
+            ], 200);
+        }
+    }
+
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/products-by-category/{id_category}",
+     *     tags={"Product"},
+     *     summary="Get all products of category (all child categories included)",
+     *     @OA\Parameter(
+     *         name="id_category",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of products by category",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Product")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No products found"
+     *     )
+     * )
+     */
+    public function getProductsByCategory($id_category)
+    {
+
+        $categoryIds = Category::where('id_parent', $id_category)->pluck('id_category');
+        $products = Product::whereIn('id_category', $categoryIds)->with('category')
+            ->where('status', 'active')
+            ->get();
+
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'No products found'
+            ], 404);
+        } else {
+            $products->transform(function ($product) {
+                if ($product->image) {
+                    $product->image = url('images/' . $product->image);
+                }
+                return $product;
+            });
+            return response()->json([
+                'status' => 'success',
+                'data' => $products
+
             ], 200);
         }
     }
