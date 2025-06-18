@@ -32,13 +32,18 @@ Route::get('/order-history/{id}', [UserController::class, 'orderHistory']);
 
 use App\Http\Controllers\API\CategoryController;
 
+Route::get('/subcategories', [CategoryController::class, 'getAllSubCategory']);
 Route::get('/categories', [CategoryController::class, 'allCategory']);
-Route::post('/categories', [CategoryController::class, 'createCategory']);
-Route::post('/subcategories', [CategoryController::class, 'createSubCategory']);
+Route::post('/createcategories', [CategoryController::class, 'createCategory']);
+Route::post('/createsubcategories', [CategoryController::class, 'createSubCategory']);
+Route::put('/categories/{id_category}', [CategoryController::class, 'updateCategory']);
+Route::put('/subcategories/{id_subcategory}', [CategoryController::class, 'updateSubCategory']);
 
 use App\Http\Controllers\API\ProductController;
 
+Route::post('/products', [ProductController::class, 'createProduct']);
 Route::get('/featured-products', [ProductController::class, 'featuredProduct']);
 Route::get('/new-products', [ProductController::class, 'newProduct']);
 Route::get('/products-by-subcategory/{id_subcategory}', [ProductController::class, 'productsBySubCategory']);
 Route::get('/products-by-category/{id_category}', [ProductController::class, 'getProductsByCategory']);
+Route::get('/products/{id_product}', [ProductController::class, 'getProductDetail']);

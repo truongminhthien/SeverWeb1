@@ -5,6 +5,56 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/subcategories": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get all subcategories (categories có id_parent > 0)",
+                "operationId": "d5cb9ee6c1bdf66b31c9ba2374493ae9",
+                "responses": {
+                    "200": {
+                        "description": "List of all subcategories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id_category": {
+                                                        "type": "integer"
+                                                    },
+                                                    "category_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "id_parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "slug": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -49,13 +99,15 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/createcategories": {
             "post": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "Create a new category (auto slug)",
-                "operationId": "d7469ab46156d0c747c7376d4c936df0",
+                "operationId": "6ec9fde8e2418594bc213fbbedd5e41c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -105,13 +157,13 @@
                 }
             }
         },
-        "/api/subcategories": {
+        "/api/createsubcategories": {
             "post": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "Create a new subcategory",
-                "operationId": "fe57e0c7f14d163999104be706bfd481",
+                "operationId": "778d2ac8ef2e65d6c4e188b52e56487d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -162,6 +214,136 @@
                     },
                     "400": {
                         "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/categories/{id_category}": {
+            "put": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Update a category",
+                "operationId": "f749690b2dc190fcc2ac8af846d85dda",
+                "parameters": [
+                    {
+                        "name": "id_category",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "category_name": {
+                                        "type": "string",
+                                        "example": "Nước hoa cao cấp"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Category updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    }
+                }
+            }
+        },
+        "/api/subcategories/{id_subcategory}": {
+            "put": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Update a subcategory",
+                "operationId": "be2e93b2c59bc9488c821349b97e5ae5",
+                "parameters": [
+                    {
+                        "name": "id_subcategory",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_category": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "category_name": {
+                                        "type": "string",
+                                        "example": "Nước hoa nữ Chanel"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Subcategory updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Subcategory not found"
                     }
                 }
             }
@@ -332,6 +514,156 @@
                     },
                     "404": {
                         "description": "No products found"
+                    }
+                }
+            }
+        },
+        "/api/products/{id_product}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get product detail by product ID",
+                "operationId": "11202ba3f49e055b2c0cbd0a0ce31409",
+                "parameters": [
+                    {
+                        "name": "id_product",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Create a new product with image upload",
+                "operationId": "f4f2474b7bb2579a68e7710e5c85306e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "id_category",
+                                    "price",
+                                    "image"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Chanel J12"
+                                    },
+                                    "id_category": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 1000000
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Nữ"
+                                    },
+                                    "volume": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "Quartz"
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "views": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "discount": {
+                                        "type": "number",
+                                        "example": 0
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Mô tả sản phẩm"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "Ghi chú"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
                     }
                 }
             }
