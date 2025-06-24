@@ -113,7 +113,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
+            'email'    => 'required|email',
             'password' => 'required|string|min:6',
             'phone'    => 'required|string|max:10',
             'address'  => 'required|string',
@@ -122,9 +122,27 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => 'failed', 'message' => 'User registration failed', 'errors' => $validator->errors()], 400);
         } else {
-            $request->merge(['username' => $request->firstname . ' ' . $request->lastname]);
-            $request->merge(['role' => 0]);
+            // Check if email already exists
+            $user = User::where('email', $request->email)->first();
+            if ($user && $user->role  !== 2) {
+                return response()->json(['status' => 'failed', 'message' => 'Account exists'], 400);
+            } elseif ($user && $user->status === 'banned') {
+                return response()->json(['status' => 'failed', 'message' => 'Account is banned'], 403);
+            } elseif ($user && $user->status === 'inactive') {
+                return response()->json(['status' => 'failed', 'message' => 'Account is inactive'], 403);
+            } elseif ($user && $user->role  === 2) {
+                $request->merge(['username' => $request->firstname . ' ' . $request->lastname]);
+                $user->update([
+                    'username' => $request->username,
+                    'password' => Hash::make($request->password),
+                    'phone'    => $request->phone,
+                    'address'  => $request->address,
+                    'role'     => 0,
+                ]);
+                return response()->json(['status' => 'success', 'message' => 'User registered successfully', 'user' => $user], 201);
+            }
 
+            $request->merge(['username' => $request->firstname . ' ' . $request->lastname]);
             $user = User::create([
                 'username' => $request->username,
                 'email'    => $request->email,
@@ -167,23 +185,21 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['status' => 'failed', 'errors' => $validator->errors()], 400);
-        } else {
-            $user = User::where('email', $request->email)->first();
-
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Login failed',
-                    'error' => 'Email hoặc mật khẩu không đúng'
-                ], 401);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Login successful',
-                    'user' => $user,
-                ], 200);
-            }
         }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Email or password is incorrect'
+            ], 401);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Login successful',
+            'user' => $user
+        ], 200);
     }
 
     /**
@@ -232,10 +248,14 @@ class UserController extends Controller
             $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
             $user->code = $code;
             if ($user->save()) {
-                Mail::to($user->email)->send(new OrderShipped($subject, $user->username, $code));
-                return response()->json(['status' => 'success', 'message' => 'Verification code sent to your email successfully'], 200);
+                try {
+                    Mail::to($user->email)->send(new OrderShipped($subject, $user->username ?? $user->name ?? '', $code));
+                    return response()->json(['status' => 'success', 'message' => 'Verification code sent to your email successfully'], 200);
+                } catch (\Exception $e) {
+                    return response()->json(['status' => 'failed', 'message' => 'Failed to send verification code', 'error' => $e->getMessage()], 500);
+                }
             } else {
-                return response()->json(['status' => 'failed', 'message' => 'Failed to send verification code'], 500);
+                return response()->json(['status' => 'failed', 'message' => 'Failed to save verification code'], 500);
             }
         }
     }
@@ -416,6 +436,7 @@ class UserController extends Controller
             ->map(function ($order) {
                 return [
                     'id_order' => $order->id_order,
+                    'id_user' => $order->id_user,
                     'total' => $order->total_amount,
                     'customer_name' => $order->customer_name,
                     'phone' => $order->phone,

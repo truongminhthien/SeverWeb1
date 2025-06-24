@@ -27,7 +27,6 @@ class Order extends Model
         'order_date',
     ];
 
-
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');

@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id('id_order');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users');
-            $table->decimal('total_amount', 10, 2);
-            $table->string('customer_name');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('payment_method');
+            $table->integer('total_amount')->default(0);
+            $table->string('customer_name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('payment_method')->nullable();
             $table->text('notes')->nullable();
-            $table->enum('status', ['cart', 'preparing', 'shipping', 'delivered'])->default('cart');
-            $table->timestamp('order_date')->useCurrent();
+            $table->enum('status', ['cart', 'ordered', 'preparing', 'shipping', 'delivered'])->default('cart');
+            $table->timestamp('order_date')->nullable();
             $table->timestamps();
         });
     }

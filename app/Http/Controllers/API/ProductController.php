@@ -31,6 +31,51 @@ use App\Models\Category;
 
 class ProductController extends Controller
 {
+
+    /**
+     * @OA\Get(
+     *     path="/api/products",
+     *     tags={"Product"},
+     *     summary="Get all products",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all products",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Product")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function getAllProduct()
+    {
+        $products = Product::with(['category:id_category,category_name,slug,status'])->get();
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'No products found'
+            ], 404);
+        } else {
+            $products->transform(function ($product) {
+                if (isset($product->image)) {
+                    $product['image'] = url($product->image);
+                }
+                return $product;
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $products
+            ], 200);
+        }
+    }
+
+
     /**
      * @OA\Get(
      *     path="/api/featured-products",
@@ -405,7 +450,7 @@ class ProductController extends Controller
                     'message' => 'Product creation failed'
                 ], 500);
             } else {
-                $product->image = url($product->image); // Chuyển đổi đường dẫn hình ảnh sang URL đầy đủ
+                $product->image = url($product->image);
                 return response()->json([
                     'status' => 'success',
                     'data' => $product

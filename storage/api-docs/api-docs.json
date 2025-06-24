@@ -5,6 +5,417 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/cart/{id_user}": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Get cart info for specified user",
+                "description": "Returns the cart details of the specified user.",
+                "operationId": "getCart",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/addtocart/{id_user}": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Add product to cart for specified user",
+                "operationId": "addToCart",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_product",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "id_product": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product added to cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product added to cart successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/updatecart/{id_user}": {
+            "put": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Update quantity of a product in cart for specified user",
+                "operationId": "updateCart",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_product",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "id_product": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cart updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart or product not found"
+                    }
+                }
+            }
+        },
+        "/api/deletecartproduct/{id_user}": {
+            "delete": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Delete a product from cart for specified user",
+                "operationId": "deleteProductFromCart",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_product"
+                                ],
+                                "properties": {
+                                    "id_product": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product deleted from cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product deleted from cart successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart or product not found"
+                    }
+                }
+            }
+        },
+        "/api/checkout/{id_user}": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Place order for all products in cart for specified user",
+                "operationId": "checkout",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "customer_name",
+                                    "phone",
+                                    "address"
+                                ],
+                                "properties": {
+                                    "customer_name": {
+                                        "type": "string",
+                                        "example": "Nguyen Van A"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0123456789"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "123 Đường ABC, Quận 1, TP.HCM"
+                                    },
+                                    "payment_method": {
+                                        "description": "Payment method, e.g., cod or bank_transfer",
+                                        "type": "string",
+                                        "example": "cod"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Order placed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Order placed successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart not found"
+                    }
+                }
+            }
+        },
+        "/api/guestcheckout": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Place order for guest (not logged in)",
+                "operationId": "guestCheckout",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cart_items",
+                                    "customer_name",
+                                    "phone",
+                                    "address"
+                                ],
+                                "properties": {
+                                    "cart_items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id_product": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "customer_name": {
+                                        "type": "string",
+                                        "example": "Nguyen Van B"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "nguyenvanb@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0987654321"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "456 Đường XYZ, Quận 2, TP.HCM"
+                                    },
+                                    "payment_method": {
+                                        "description": "Payment method, e.g., cod or bank_transfer",
+                                        "type": "string",
+                                        "example": "cod"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Order placed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Order placed successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data"
+                    }
+                }
+            }
+        },
         "/api/subcategories": {
             "get": {
                 "tags": [
@@ -348,6 +759,144 @@
                 }
             }
         },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get all products",
+                "operationId": "a30555ff80685b9e3ed1523807a1fc94",
+                "responses": {
+                    "200": {
+                        "description": "List of all products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Product"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Create a new product with image upload",
+                "operationId": "f4f2474b7bb2579a68e7710e5c85306e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "id_category",
+                                    "price",
+                                    "image"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Chanel J12"
+                                    },
+                                    "id_category": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 1000000
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Nữ"
+                                    },
+                                    "volume": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "Quartz"
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "views": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "discount": {
+                                        "type": "number",
+                                        "example": 0
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Mô tả sản phẩm"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "Ghi chú"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/featured-products": {
             "get": {
                 "tags": [
@@ -557,113 +1106,6 @@
                     },
                     "404": {
                         "description": "Product not found"
-                    }
-                }
-            }
-        },
-        "/api/products": {
-            "post": {
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Create a new product with image upload",
-                "operationId": "f4f2474b7bb2579a68e7710e5c85306e",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "id_category",
-                                    "price",
-                                    "image"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Chanel J12"
-                                    },
-                                    "id_category": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "price": {
-                                        "type": "number",
-                                        "example": 1000000
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
-                                    "rating": {
-                                        "type": "integer",
-                                        "example": 5
-                                    },
-                                    "gender": {
-                                        "type": "string",
-                                        "example": "Nữ"
-                                    },
-                                    "volume": {
-                                        "type": "integer",
-                                        "example": 100
-                                    },
-                                    "type": {
-                                        "type": "string",
-                                        "example": "Quartz"
-                                    },
-                                    "quantity": {
-                                        "type": "integer",
-                                        "example": 10
-                                    },
-                                    "views": {
-                                        "type": "integer",
-                                        "example": 0
-                                    },
-                                    "discount": {
-                                        "type": "number",
-                                        "example": 0
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "Mô tả sản phẩm"
-                                    },
-                                    "note": {
-                                        "type": "string",
-                                        "example": "Ghi chú"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "example": "active"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Product created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "data": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Validation error"
                     }
                 }
             }
@@ -1396,9 +1838,21 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
         }
     },
     "tags": [
+        {
+            "name": "Cart",
+            "description": "Cart"
+        },
         {
             "name": "Category",
             "description": "Category"

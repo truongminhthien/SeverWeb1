@@ -238,23 +238,18 @@ class DatabaseSeeder extends Seeder
                     'address' => '123 Admin Street',
                     'role' => 1,
                 ],
+                [
+                    'username' => 'Minh Hiệp',
+                    'password' => bcrypt('123'),
+                    'email' => 'minhhiep@gmail.com',
+                    'phone' => 123456789,
+                    'address' => '123 Admin Street',
+                    'role' => 1,
+                ],
             ]
         );
 
         \App\Models\Product::insert([
-            [
-                "id_category" => 13, // Đồng hồ nữ Chanel
-                "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm",
-                "image" => "images/wristwatch/j12-bleu-watch-caliber-12-2-33-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10309-9568362102814.jpg",
-                "price" => 370322267,
-                "rating" => 4,
-                "gender" => "Unisex",
-                "volume" => null,
-                "type" => "Automatic",
-                "description" => "Đồng hồ Chanel J12 Bleu 33mm, chất liệu ceramic xanh mờ, bộ máy Caliber 12.2, thiết kế sang trọng và hiện đại.",
-                "note" => "Chống nước 50m, kính sapphire, dây ceramic",
-                "status" => "active"
-            ],
             [
                 "id_category" => 14, // Đồng hồ nam Chanel
                 "name" => "Chanel J12 Bleu Watch 38mm",
