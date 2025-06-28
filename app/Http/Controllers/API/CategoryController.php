@@ -78,6 +78,9 @@ class CategoryController extends Controller
         $categories = Category::where('id_parent', 0)
             ->with(['subcategory' => function ($query) {
                 $query->select('id_category', 'id_parent', 'category_name', 'slug', 'status', 'created_at', 'updated_at');
+            }, 'subcategory.products' => function ($query) {
+                // Eager load products for subcategories
+                $query->select('id_product', 'id_category'); // adjust fields as needed
             }])
             ->select('id_category', 'category_name', 'slug', 'status', 'created_at', 'updated_at')
             ->get()
@@ -94,6 +97,7 @@ class CategoryController extends Controller
                             'id_subcategory' => $sub->id_category,
                             'id_category' => $sub->id_parent,
                             'category_name' => $sub->category_name,
+                            'product_count' => $sub->products ? $sub->products->count() : 0,
                             'slug' => $sub->slug,
                             'status' => $sub->status,
                             'created_at' => $sub->created_at,

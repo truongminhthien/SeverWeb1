@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderShipped;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -137,9 +138,15 @@ class UserController extends Controller
                     'password' => Hash::make($request->password),
                     'phone'    => $request->phone,
                     'address'  => $request->address,
+                    'image'    => 'uploads/default-avatar-profile-icon-of-social-media-user-vector.jpg',
+                    'status'   => 'active',
                     'role'     => 0,
                 ]);
-                return response()->json(['status' => 'success', 'message' => 'User registered successfully', 'user' => $user], 201);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User registered successfully',
+                    'user' => $user
+                ], 201);
             }
 
             $request->merge(['username' => $request->firstname . ' ' . $request->lastname]);
@@ -149,12 +156,21 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
                 'phone'    => $request->phone,
                 'address'  => $request->address,
+                'image'    => 'uploads/default-avatar-profile-icon-of-social-media-user-vector.jpg',
                 'role'     => 0,
             ]);
             if (!$user) {
-                return response()->json(['status' => 'failed', 'message' => 'User registration failed0', 'user' => $user], 500);
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'User registration failed0',
+                    'user' => $user
+                ], 500);
             } else {
-                return response()->json(['status' => 'success', 'message' => 'User registered successfully', 'user' => $user], 201);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User registered successfully',
+                    'user' => $user
+                ], 201);
             }
         }
     }
@@ -198,7 +214,18 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Login successful',
-            'user' => $user
+            'user' => [
+                'id_user' => $user->id_user,
+                'username' => $user->username,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'address' => $user->address,
+                'image' => url($user->image),
+                'role' => $user->role,
+                'status' => $user->status,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at
+            ]
         ], 200);
     }
 
@@ -387,11 +414,17 @@ class UserController extends Controller
             return response()->json(['status' => 'failed', 'message' => 'User not found'], 404);
         } else {
             if ($request->password !== $request->confirm_password) {
-                return response()->json(['status' => 'failed', 'message' => 'Passwords do not match'], 400);
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Passwords do not match'
+                ], 400);
             } else {
                 $user->password = Hash::make($request->password);
                 $user->save();
-                return response()->json(['status' => 'success', 'message' => 'Password reset successfully'], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Password reset successfully'
+                ], 200);
             }
         }
     }
@@ -469,11 +502,12 @@ class UserController extends Controller
         }
     }
 
+
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/users/{id}",
      *     tags={"User"},
-     *     summary="Update user information",
+     *     summary="Update user information (including avatar)",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -482,13 +516,15 @@ class UserController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="username", type="string", example="john_doe"),
-     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="secret123"),
-     *             @OA\Property(property="phone", type="integer", example=123456789),
-     *             @OA\Property(property="address", type="string", example="123 Street Name"),
-     *             @OA\Property(property="role", type="integer", example=0)
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="username", type="string", example="john_doe"),
+     *                 @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *                 @OA\Property(property="phone", type="string", example="123456789"),
+     *                 @OA\Property(property="address", type="string", example="123 Street Name"),
+     *                 @OA\Property(property="avatar", type="string", format="binary", description="User avatar image")
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=200, description="User updated successfully"),
@@ -496,60 +532,62 @@ class UserController extends Controller
      *     @OA\Response(response=404, description="User not found")
      * )
      */
-    public function update(Request $request, $id)
+
+    public function updateUser(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'sometimes|string|max:255',
-            'email'    => 'sometimes|email|unique:users,email,' . $id . ',id_user',
-            'password' => 'sometimes|string|min:6',
-            'phone'    => 'sometimes|integer',
-            'address'  => 'sometimes|string',
-            'role'     => 'sometimes|integer',
+            'username' => 'nullable|string|max:255',
+            'email'    => 'nullable|email|unique:users,email,' . $id . ',id_user',
+            'phone'    => 'nullable|string|max:10',
+            'address'  => 'nullable|string',
+            'avatar'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
         }
 
         $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User not found'
+            ], 404);
+        }
+        if (isset($request->username)) {
+            $user->username = $request->username;
+        }
+        if (isset($request->email)) {
+            $user->email = $request->email;
+        }
+        if (isset($request->phone)) {
+            $user->phone = $request->phone;
+        }
+        if (isset($request->address)) {
+            $user->address = $request->address;
         }
 
-        $data = $request->only(['username', 'email', 'phone', 'address', 'role']);
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+        if ($request->hasFile('avatar')) {
+
+            $file = $request->file('avatar');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/avatars'), $filename);
+            // Do not delete default image
+            $defaultImage = 'uploads/default-avatar-profile-icon-of-social-media-user-vector.jpg';
+            if ($user->image && file_exists(public_path($user->image)) && $user->image !== $defaultImage) {
+                @unlink(public_path($user->image));
+            }
+            $user->image = '/uploads/avatars/' . $filename;
         }
 
-        $user->update($data);
-
-        return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
-    }
-
-    /**
-     * @OA\Delete(
-     *     path="/api/users/{id}",
-     *     tags={"User"},
-     *     summary="Delete user",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="User deleted successfully"),
-     *     @OA\Response(response=404, description="User not found")
-     * )
-     */
-    public function destroy($id)
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+        if ($user->save()) {
+            return response()->json(['status' => 'success', 'message' => 'User updated successfully', 'user' => $user], 200);
+        } else {
+            return response()->json(['status' => 'failed', 'message' => 'Failed to update user'], 500);
         }
-
-        $user->delete();
-
-        return response()->json(['message' => 'User deleted successfully'], 200);
     }
 }
