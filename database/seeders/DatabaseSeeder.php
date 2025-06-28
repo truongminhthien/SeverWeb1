@@ -46,11 +46,7 @@ class DatabaseSeeder extends Seeder
                 'category_image' => 'categories/trangdiem.jpg',
                 'status' => 'active',
             ],
-            [
-                'category_name' => 'Túi xách',
-                'category_image' => 'categories/tui_xach.jpg',
-                'status' => 'inactive',
-            ],
+
             [
                 'category_name' => 'Túi xách Chanel',
                 'status' => 'active',
@@ -135,6 +131,11 @@ class DatabaseSeeder extends Seeder
                 'category_name' => 'Phấn nền Chanel',
                 'status' => 'active',
                 'id_parent' => 6,
+            ],
+            [
+                'category_name' => 'Túi xách',
+                'category_image' => 'categories/tui_xach.jpg',
+                'status' => 'inactive',
             ],
         ];
         foreach ($categories as $category) {
