@@ -348,7 +348,7 @@ class ProductController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name", "id_category", "price", "image"},
+     *                 required={"name", "id_category", "price"},
      *                 @OA\Property(property="name", type="string", example="Chanel J12"),
      *                 @OA\Property(property="id_category", type="integer", example=1),
      *                 @OA\Property(property="price", type="number", example=1000000),
@@ -386,7 +386,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'id_category' => 'required|integer|exists:categories,id_category',
             'price' => 'required|numeric|min:0',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp,avif|max:2048',
+            'image' => 'sometimes|image|mimes:jpg,jpeg,png,webp,avif|max:2048',
             'rating' => 'nullable|integer|min:0|max:5',
             'gender' => 'nullable|string',
             'volume' => 'nullable|integer',
@@ -399,7 +399,7 @@ class ProductController extends Controller
             'status' => 'nullable|in:active,inactive',
         ]);
         // kiểm tra tất cả các trường bắt buộc đã được cung cấp của validated
-        if (empty($validated['name']) || empty($validated['id_category']) || empty($validated['price']) || empty($validated['image'])) {
+        if (empty($validated['name']) || empty($validated['id_category']) || empty($validated['price'])) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Missing required fields'
@@ -421,11 +421,6 @@ class ProductController extends Controller
                 $filename = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path($folder), $filename);
                 $path = $folder . '/' . $filename;
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Image upload failed'
-                ], 400);
             }
             // Tạo sản phẩm mới
             $product = Product::create([
@@ -457,5 +452,126 @@ class ProductController extends Controller
                 ], 201);
             }
         }
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/products/{id_product}",
+     *     tags={"Product"},
+     *     summary="Update product information (including image)",
+     *     @OA\Parameter(
+     *         name="id_product",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="name", type="string", example="Chanel J12"),
+     *                 @OA\Property(property="id_category", type="integer", example=1),
+     *                 @OA\Property(property="price", type="number", example=1000000),
+     *                 @OA\Property(property="image", type="string", format="binary"),
+     *                 @OA\Property(property="rating", type="integer", example=5),
+     *                 @OA\Property(property="gender", type="string", example="Nữ"),
+     *                 @OA\Property(property="volume", type="integer", example=100),
+     *                 @OA\Property(property="type", type="string", example="Quartz"),
+     *                 @OA\Property(property="quantity", type="integer", example=10),
+     *                 @OA\Property(property="views", type="integer", example=0),
+     *                 @OA\Property(property="discount", type="number", example=0),
+     *                 @OA\Property(property="description", type="string", example="Mô tả sản phẩm"),
+     *                 @OA\Property(property="note", type="string", example="Ghi chú"),
+     *                 @OA\Property(property="status", type="string", example="active"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Product not found"
+     *     )
+     * )
+     */
+    public function updateProduct(Request $request, $id_product)
+    {
+        $product = Product::find($id_product);
+        if (!$product) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Product not found'
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'id_category' => 'sometimes|integer|exists:categories,id_category',
+            'price' => 'sometimes|numeric|min:0',
+            'image' => 'sometimes|image|mimes:jpg,jpeg,png,webp,avif|max:2048',
+            'rating' => 'sometimes|integer|min:0|max:5',
+            'gender' => 'sometimes|string',
+            'volume' => 'sometimes|integer',
+            'type' => 'sometimes|string',
+            'quantity' => 'sometimes|integer',
+            'views' => 'sometimes|integer',
+            'discount' => 'sometimes|numeric',
+            'description' => 'sometimes|string',
+            'note' => 'sometimes|string',
+            'status' => 'sometimes|in:active,inactive',
+        ]);
+
+        // kiểm tra tên sản phẩm đã tồn tại hay chưa
+        if (isset($validated['name']) && Product::where('name', $validated['name'])->where('id_product', '!=', $id_product)->exists()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Product name already exists'
+            ], 400);
+        }
+        // kiểm tra id_category có tồn tại trong bảng categories hay không
+        if (isset($validated['id_category']) && !Category::where('id_category', $validated['id_category'])->exists()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        // Cập nhật các trường
+        foreach ($validated as $key => $value) {
+            if ($key !== 'image') {
+                $product->$key = $value;
+            }
+        }
+
+        // Xử lý upload hình ảnh mới nếu có
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $folder = 'images/products/' . date('Y/m/d');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path($folder), $filename);
+            $path = $folder . '/' . $filename;
+
+            // Xóa ảnh cũ nếu có
+            if ($product->image && file_exists(public_path($product->image))) {
+                @unlink(public_path($product->image));
+            }
+            $product->image = $path;
+        }
+
+        $product->save();
+        $product->image = url($product->image);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $product
+        ], 200);
     }
 }
