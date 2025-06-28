@@ -517,15 +517,16 @@
                 "tags": [
                     "Category"
                 ],
-                "summary": "Create a new category (auto slug)",
+                "summary": "Create a new category (auto slug, with image upload)",
                 "operationId": "6ec9fde8e2418594bc213fbbedd5e41c",
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "category_name"
+                                    "category_name",
+                                    "status"
                                 ],
                                 "properties": {
                                     "category_name": {
@@ -535,6 +536,10 @@
                                     "status": {
                                         "type": "string",
                                         "example": "active"
+                                    },
+                                    "category_image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -630,12 +635,12 @@
             }
         },
         "/api/categories/{id_category}": {
-            "put": {
+            "post": {
                 "tags": [
                     "Category"
                 ],
-                "summary": "Update a category",
-                "operationId": "f749690b2dc190fcc2ac8af846d85dda",
+                "summary": "Update a category (with optional image upload)",
+                "operationId": "efe7a12602cc7975ebdf842173185f90",
                 "parameters": [
                     {
                         "name": "id_category",
@@ -649,7 +654,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "category_name": {
@@ -659,6 +664,10 @@
                                     "status": {
                                         "type": "string",
                                         "example": "active"
+                                    },
+                                    "category_image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"

@@ -82,12 +82,13 @@ class CategoryController extends Controller
                 // Eager load products for subcategories
                 $query->select('id_product', 'id_category'); // adjust fields as needed
             }])
-            ->select('id_category', 'category_name', 'slug', 'status', 'created_at', 'updated_at')
+            ->select('id_category', 'category_name', 'category_image', 'slug', 'status', 'created_at', 'updated_at')
             ->get()
             ->map(function ($category) {
                 return [
                     'id_category' => $category->id_category,
                     'category_name' => $category->category_name,
+                    'category_image' => $category->category_image ? asset($category->category_image) : null,
                     'slug' => $category->slug,
                     'status' => $category->status,
                     'created_at' => $category->created_at,
@@ -107,7 +108,10 @@ class CategoryController extends Controller
                 ];
             });
 
-        return response()->json($categories, 200);
+        return response()->json([
+            'status' => 'success',
+            'categories' => $categories
+        ], 200);
     }
 
 
@@ -116,13 +120,17 @@ class CategoryController extends Controller
      * @OA\Post(
      *     path="/api/createcategories",
      *     tags={"Category"},
-     *     summary="Create a new category (auto slug)",
+     *     summary="Create a new category (auto slug, with image upload)",
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"category_name"},
-     *             @OA\Property(property="category_name", type="string", example="Nước Hoa"),
-     *             @OA\Property(property="status", type="string", example="active")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"category_name", "status"},
+     *                 @OA\Property(property="category_name", type="string", example="Nước Hoa"),
+     *                 @OA\Property(property="status", type="string", example="active"),
+     *                 @OA\Property(property="category_image", type="string", format="binary")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -141,10 +149,10 @@ class CategoryController extends Controller
      */
     public function createCategory(Request $request)
     {
-
         $validated = $request->validate([
             'category_name' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
+            'category_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $existingCategory = Category::where('category_name', $validated['category_name'])->first();
@@ -153,23 +161,35 @@ class CategoryController extends Controller
                 'status' => 'failed',
                 'message' => 'Category already exists'
             ], 400);
-        } else {
-            $category = Category::create([
-                'category_name' => $validated['category_name'],
-                'status' => $validated['status'] ?? 'inactive',
-            ]);
-            return response()->json([
-                'status' => 'success',
-                'data' => [
-                    'id_category' => $category->id_category,
-                    'category_name' => $category->category_name,
-                    'slug' => $category->slug,
-                    'status' => $category->status,
-                    'created_at' => $category->created_at,
-                    'updated_at' => $category->updated_at,
-                ]
-            ], 201);
         }
+
+        $imagePath = null;
+        if ($request->hasFile('category_image')) {
+            $image = $request->file('category_image');
+            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            // Lưu hình ảnh vào thư mục public/categories
+            $image->move(public_path('categories'), $imageName);
+            $imagePath = 'categories/' . $imageName;
+        }
+
+        $category = Category::create([
+            'category_name' => $validated['category_name'],
+            'status' => $validated['status'] ?? 'inactive',
+            'category_image' => $imagePath,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'id_category' => $category->id_category,
+                'category_name' => $category->category_name,
+                'slug' => $category->slug,
+                'status' => $category->status,
+                'category_image' => $category->category_image ? asset($category->category_image) : null,
+                'created_at' => $category->created_at,
+                'updated_at' => $category->updated_at,
+            ]
+        ], 201);
     }
 
 
@@ -258,10 +278,10 @@ class CategoryController extends Controller
 
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/categories/{id_category}",
      *     tags={"Category"},
-     *     summary="Update a category",
+     *     summary="Update a category (with optional image upload)",
      *     @OA\Parameter(
      *         name="id_category",
      *         in="path",
@@ -270,9 +290,13 @@ class CategoryController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="category_name", type="string", example="Nước hoa cao cấp"),
-     *             @OA\Property(property="status", type="string", example="active")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="category_name", type="string", example="Nước hoa cao cấp"),
+     *                 @OA\Property(property="status", type="string", example="active"),
+     *                 @OA\Property(property="category_image", type="string", format="binary")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -292,25 +316,38 @@ class CategoryController extends Controller
     public function updateCategory(Request $request, $id_category)
     {
         $category = Category::find($id_category);
-
-        if (!$category) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Category not found'
-            ], 404);
-        }
         $validated = $request->validate([
             'category_name' => 'sometimes|required|string|max:255',
             'status' => 'sometimes|in:active,inactive',
+            'category_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if (isset($validated['category_name'])) {
+            $existingCategory = Category::where('category_name', $validated['category_name'])->first();
+            if ($existingCategory) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Category already exists'
+                ], 400);
+            }
             $category->category_name = $validated['category_name'];
             $category->slug = null;
         }
         if (isset($validated['status'])) {
             $category->status = $validated['status'];
         }
+
+        if ($request->hasFile('category_image')) {
+            // Xóa ảnh cũ nếu có
+            if ($category->category_image && file_exists(public_path($category->category_image))) {
+                @unlink(public_path($category->category_image));
+            }
+            $image = $request->file('category_image');
+            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('categories'), $imageName);
+            $category->category_image = 'categories/' . $imageName;
+        }
+
         $category->save();
 
         return response()->json([
@@ -320,6 +357,7 @@ class CategoryController extends Controller
                 'category_name' => $category->category_name,
                 'slug' => $category->slug,
                 'status' => $category->status,
+                'category_image' => $category->category_image ? asset($category->category_image) : null,
                 'created_at' => $category->created_at,
                 'updated_at' => $category->updated_at,
             ]

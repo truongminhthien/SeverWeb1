@@ -18,27 +18,38 @@ class DatabaseSeeder extends Seeder
         $categories = [
             [
                 'category_name' => 'Thời Trang',
+                'category_image' => 'categories/thoitrang.jpg',
                 'status' => 'inactive',
             ],
             [
                 'category_name' => 'Nước Hoa',
+                'category_image' => 'categories/nuochoa.jpg',
                 'status' => 'active',
             ],
             [
                 'category_name' => 'Đồng Hồ',
+                'category_image' => 'categories/dongho.jpg',
                 'status' => 'active',
             ],
             [
                 'category_name' => 'Mắt Kính',
+                'category_image' => 'categories/matkinh.jpg',
                 'status' => 'active',
             ],
             [
                 'category_name' => 'Trang Sức',
+                'category_image' => 'categories/trangsuc.jpg',
                 'status' => 'inactive',
             ],
             [
                 'category_name' => 'Trang Điểm',
+                'category_image' => 'categories/trangdiem.jpg',
                 'status' => 'active',
+            ],
+            [
+                'category_name' => 'Túi xách',
+                'category_image' => 'categories/tui_xach.jpg',
+                'status' => 'inactive',
             ],
             [
                 'category_name' => 'Túi xách Chanel',
