@@ -49,6 +49,7 @@ Route::get('/products-by-subcategory/{id_subcategory}', [ProductController::clas
 Route::get('/products-by-category/{id_category}', [ProductController::class, 'getProductsByCategory']);
 Route::get('/products/{id_product}', [ProductController::class, 'getProductDetail']);
 Route::post('/products/{id_product}', [ProductController::class, 'updateProduct']);
+Route::delete('/products/{id_product}', [ProductController::class, 'deleteProduct']);
 
 use App\Http\Controllers\API\CartController;
 //

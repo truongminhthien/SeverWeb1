@@ -54,7 +54,9 @@ class ProductController extends Controller
      */
     public function getAllProduct()
     {
-        $products = Product::with(['category:id_category,category_name,slug,status'])->get();
+        $products = Product::with(['category:id_category,category_name,slug,status'])
+            ->where('status', '!=', 'delete')
+            ->get();
         if ($products->isEmpty()) {
             return response()->json([
                 'status' => 'failed',
@@ -317,7 +319,8 @@ class ProductController extends Controller
      */
     public function getProductDetail($id_product)
     {
-        $product = Product::find($id_product);
+        $product = Product::find($id_product)->Where('status', 'active')
+            ->first();
 
         if (!$product) {
             return response()->json([
@@ -572,6 +575,55 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $product
+        ], 200);
+    }
+
+
+    /**
+     * @OA\Delete(
+     *     path="/api/products/{id_product}",
+     *     tags={"Product"},
+     *     summary="Delete a product by ID (soft delete)",
+     *     @OA\Parameter(
+     *         name="id_product",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Product deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Product not found"
+     *     )
+     * )
+     */
+    public function deleteProduct($id_product)
+    {
+        $product = Product::find($id_product);
+        if (!$product) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Product not found'
+            ], 404);
+        }
+
+        // Nếu muốn xóa mềm (soft delete), chỉ đổi status
+        $product->status = 'delete';
+        $product->save();
+
+        // Nếu muốn xóa cứng (hard delete), dùng:
+        // $product->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Product deleted successfully'
         ], 200);
     }
 }
