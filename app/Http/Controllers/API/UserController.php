@@ -56,7 +56,10 @@ class UserController extends Controller
      */
     public function getAllUser()
     {
-        $users = User::all();
+        $users = User::where('status', '!=', 'delete')
+            ->where('role', '!=', 2)
+            ->get();
+
         return response()->json([
             'status' => 'success',
             'data' => $users
@@ -589,5 +592,144 @@ class UserController extends Controller
         } else {
             return response()->json(['status' => 'failed', 'message' => 'Failed to update user'], 500);
         }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/users",
+     *     tags={"User"},
+     *     summary="Create a new user with avatar and role",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"username", "email", "password", "phone", "role", "status"},
+     *                 @OA\Property(property="username", type="string", example="john_doe"),
+     *                 @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *                 @OA\Property(property="password", type="string", format="password", example="secret123"),
+     *                 @OA\Property(property="phone", type="string", example="123456789"),
+     *                 @OA\Property(property="address", type="string", example="123 Street Name"),
+     *                 @OA\Property(property="status", type="string", example="active"),
+     *                 @OA\Property(property="role", type="integer", example=0),
+     *                 @OA\Property(property="avatar", type="string", format="binary", description="User avatar image")
+     * 
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="User created successfully"),
+     *     @OA\Response(response=400, description="Validation error")
+     * )
+     */
+    public function createUserAtAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'phone'    => 'required|string|max:10',
+            'address'  => 'nullable|string',
+            'status'   => 'required|string|in:active,inactive,banned',
+            'role'     => 'required|integer|in:0,1,2',
+            'avatar'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $imagePath = 'uploads/default-avatar-profile-icon-of-social-media-user-vector.jpg';
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/avatars'), $filename);
+            $imagePath = 'uploads/avatars/' . $filename;
+        }
+
+        $user = User::create([
+            'username' => $request->username,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'phone'    => $request->phone,
+            'address'  => $request->address,
+            'role'     => $request->role,
+            'image'    => $imagePath,
+            'status'   => $request->status,
+        ]);
+
+        if ($user) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User created successfully',
+                'user' => [
+                    'id_user' => $user->id_user,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'address' => $user->address,
+                    'image' => url($user->image),
+                    'role' => (int) $user->role,
+                    'status' => $user->status,
+                    'created_at' => $user->created_at,
+                    'updated_at' => $user->updated_at
+                ]
+            ], 201);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Failed to create user'
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/users/{id}",
+     *     tags={"User"},
+     *     summary="Delete a user by ID (soft delete)",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="User deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
+     */
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Xóa mềm: chuyển status thành 'delete'
+        $user->status = 'delete';
+        $user->save();
+
+        // Nếu muốn xóa cứng, dùng: $user->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User deleted successfully'
+        ], 200);
     }
 }
