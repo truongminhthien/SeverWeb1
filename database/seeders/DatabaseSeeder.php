@@ -266,7 +266,7 @@ class DatabaseSeeder extends Seeder
                 "id_category" => 14, // Đồng hồ nam Chanel
                 "name" => "Chanel J12 Bleu Watch 38mm",
                 "image" => "images/wristwatch/9568364527646.jpg",
-                "price" => 211620643,
+                "price" => 1000000,
                 "rating" => 5,
                 "gender" => "Unisex",
                 "volume" => null,
@@ -279,7 +279,7 @@ class DatabaseSeeder extends Seeder
                 "id_category" => 13, // Đồng hồ nữ Chanel
                 "name" => "Chanel J12 Bleu Watch 33mm",
                 "image" => "images/wristwatch/9568365805598.jpg",
-                "price" => 300988017,
+                "price" => 2000000,
                 "rating" => 3,
                 "gender" => "Nữ",
                 "volume" => null,
@@ -292,7 +292,7 @@ class DatabaseSeeder extends Seeder
                 "id_category" => 15, // Đồng hồ unisex Chanel
                 "name" => "Chanel J12 Bleu Watch Caliber 12.1 38mm",
                 "image" => "images/wristwatch/j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-dos-h10310-9568362463262.jpg",
-                "price" => 339544137,
+                "price" => 10000000,
                 "rating" => 3,
                 "gender" => "Nam",
                 "volume" => null,
@@ -470,6 +470,35 @@ class DatabaseSeeder extends Seeder
                 "note" => "Chống nước 50m, kính sapphire, kim cương baguette",
                 "status" => "active"
             ]
+        ]);
+
+        \App\Models\Voucher::insert([
+            [
+                'code' => 'CHANEL100000',
+                'discount_amount' => 100000,
+                'max_discount_amount' => 1000000,
+                'min_order_amount' => 5000000,
+                'start_date' => '2025-01-01',
+                'end_date' => '2025-12-31',
+                'usage_limit' => 100,
+                'description' => 'Giảm 1.000.000đ cho đơn hàng từ 5.000.000đ trở lên',
+                'note' => 'Áp dụng cho tất cả sản phẩm Chanel',
+                'status' => 'active',
+                'type' => 'fixed',
+            ],
+            [
+                'code' => 'CHANEL20',
+                'discount_amount' => 10,
+                'max_discount_amount' => null,
+                'min_order_amount' => 1000000,
+                'start_date' => '2025-01-01',
+                'end_date' => '2025-12-31',
+                'usage_limit' => 50,
+                'description' => 'Giảm 10% cho đơn hàng từ 1.000.000đ trở lên',
+                'note' => 'Áp dụng cho tất cả sản phẩm Chanel',
+                'status' => 'active',
+                'type' => 'percentage',
+            ],
         ]);
 
         \App\Models\Product::insert([

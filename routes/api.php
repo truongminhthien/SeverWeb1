@@ -60,5 +60,12 @@ Route::post('/addtocart/{id_user}', [CartController::class, 'addToCart']);
 Route::put('/updatecart/{id_user}', [CartController::class, 'updateCart']);
 Route::delete('/deletecartproduct/{id_user}', [CartController::class, 'deleteProductToCart']);
 Route::post('/checkout/{id_user}', [CartController::class, 'checkout']);
+Route::post('/applyvoucher/{id_user}', [CartController::class, 'applyVoucher']);
 // guest order
 Route::post('/guestcheckout', [CartController::class, 'guestCheckout']);
+
+
+Route::post('/vouchers', [CartController::class, 'createVoucher']);
+Route::put('/vouchers/{id_voucher}', [CartController::class, 'updateVoucher']);
+Route::get('/vouchers', [CartController::class, 'getVouchers']);
+Route::delete('/vouchers/{id_voucher}', [CartController::class, 'deleteVoucher']);

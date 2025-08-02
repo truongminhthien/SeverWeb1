@@ -416,6 +416,354 @@
                 }
             }
         },
+        "/api/applyvoucher/{id_user}": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Apply voucher to user's cart",
+                "operationId": "54c45e3f8f6786a7348ff96583fb003b",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "voucher_code"
+                                ],
+                                "properties": {
+                                    "voucher_code": {
+                                        "type": "string",
+                                        "example": "SALE50"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Voucher applied successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Voucher applied successfully"
+                                        },
+                                        "discount_amount": {
+                                            "type": "number",
+                                            "example": 50000
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid voucher or cart"
+                    }
+                }
+            }
+        },
+        "/api/vouchers": {
+            "get": {
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Get all vouchers",
+                "operationId": "fd342f6fbf5a6b7a6151a8f5c5862c1d",
+                "responses": {
+                    "200": {
+                        "description": "List of vouchers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "vouchers": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Create a new voucher",
+                "operationId": "91d427a62227180b6143fa1f6c1bad24",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code",
+                                    "discount_amount",
+                                    "min_order_amount",
+                                    "type",
+                                    "usage_limit",
+                                    "start_date",
+                                    "end_date"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "SALE50"
+                                    },
+                                    "discount_amount": {
+                                        "type": "number",
+                                        "example": 50
+                                    },
+                                    "type": {
+                                        "description": "percentage or fixed",
+                                        "type": "string",
+                                        "example": "percentage"
+                                    },
+                                    "min_order_amount": {
+                                        "description": "Minimum order amount to apply the voucher",
+                                        "type": "string",
+                                        "example": "1000000"
+                                    },
+                                    "max_discount_amount": {
+                                        "description": "Maximum discount amount for the voucher",
+                                        "type": "string",
+                                        "example": "5000000"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-01"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-31"
+                                    },
+                                    "usage_limit": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Get 50% off on your next purchase"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "Limited time offer"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Voucher created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "voucher": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/vouchers/{id_voucher}": {
+            "put": {
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Update voucher information",
+                "operationId": "3063e623223f06332815744405657514",
+                "parameters": [
+                    {
+                        "name": "id_voucher",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "SALE50"
+                                    },
+                                    "discount_amount": {
+                                        "type": "number",
+                                        "example": 50
+                                    },
+                                    "type": {
+                                        "description": "percentage or fixed",
+                                        "type": "string",
+                                        "example": "percentage"
+                                    },
+                                    "min_order_amount": {
+                                        "type": "string",
+                                        "example": "1000000"
+                                    },
+                                    "max_discount_amount": {
+                                        "type": "string",
+                                        "example": "5000000"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-01"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-31"
+                                    },
+                                    "usage_limit": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Get 50% off on your next purchase"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "Limited time offer"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Voucher updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "voucher": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Voucher not found"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Delete a voucher by ID",
+                "operationId": "15196bda1cdcde0963b7fd4c3cea61a6",
+                "parameters": [
+                    {
+                        "name": "id_voucher",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Voucher deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Voucher deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Voucher not found"
+                    }
+                }
+            }
+        },
         "/api/subcategories": {
             "get": {
                 "tags": [
@@ -2086,6 +2434,10 @@
         {
             "name": "Cart",
             "description": "Cart"
+        },
+        {
+            "name": "Voucher",
+            "description": "Voucher"
         },
         {
             "name": "Category",

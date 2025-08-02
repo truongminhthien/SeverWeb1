@@ -36,4 +36,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class, 'id_order', 'id_order');
     }
+
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class, 'id_voucher', 'id_voucher');
+    }
 }

@@ -319,7 +319,8 @@ class ProductController extends Controller
      */
     public function getProductDetail($id_product)
     {
-        $product = Product::find($id_product)->Where('status', 'active')
+        $product = Product::where('id_product', $id_product)
+            ->where('status', 'active')
             ->first();
 
         if (!$product) {

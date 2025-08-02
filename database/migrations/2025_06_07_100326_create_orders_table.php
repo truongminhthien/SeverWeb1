@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id('id_order');
+            $table->unsignedBigInteger('id_voucher')->nullable();
+            $table->foreign('id_voucher')->references('id_voucher')->on('vouchers')->onDelete('set null');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users');
             $table->integer('total_amount')->default(0);

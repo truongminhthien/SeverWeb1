@@ -465,7 +465,7 @@ class UserController extends Controller
      */
     public function orderHistory($id)
     {
-        $orders = Order::with(['orderDetails.product'])
+        $orders = Order::with(['orderDetails.product', 'voucher'])
             ->where('id_user', $id)
             ->orderBy('order_date', 'desc')
             ->get()
@@ -481,6 +481,7 @@ class UserController extends Controller
                     'notes' => $order->notes,
                     'order_date' => $order->order_date,
                     'status' => $order->status,
+                    'voucher' => $order->voucher, // Thêm thông tin voucher
                     'orderdatails' => $order->orderDetails->map(function ($detail) {
                         return [
                             'id_product' => $detail->id_product,

@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Voucher;
 use App\Models\Product;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderSuccessMail;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -32,7 +34,6 @@ class CartController extends Controller
             ];
         }
     }
-
     /**
      * @OA\Get(
      *     path="/api/cart/{id_user}",
@@ -161,7 +162,6 @@ class CartController extends Controller
 
         // Tìm cart hiện tại hoặc tạo mới nếu chưa có
         $cart = Order::firstOrCreate(
-            ['id_user' => $id_user, 'status' => 'cart'],
             ['id_user' => $id_user, 'status' => 'cart']
         );
 
@@ -176,7 +176,10 @@ class CartController extends Controller
                 'quantity' => $quantity,
             ]);
         }
-
+        $cart->total_amount = $cart->orderDetails->sum(function ($detail) {
+            return $detail->quantity * $detail->product->price;
+        });
+        $cart->save();
         return response()->json([
             'status' => 'success',
             'message' => 'Product added to cart successfully'
@@ -258,7 +261,11 @@ class CartController extends Controller
 
         // Cập nhật số lượng
         $orderDetail->quantity = $quantity;
+        $cart->total_amount = $cart->orderDetails->sum(function ($detail) {
+            return $detail->quantity * $detail->product->price;
+        });
         $orderDetail->save();
+        $cart->save();
 
         return response()->json([
             'status' => 'success',
@@ -337,9 +344,13 @@ class CartController extends Controller
                 'message' => 'Product not found in cart'
             ], 404);
         }
-
         // Xóa sản phẩm khỏi cart
         $orderDetail->delete();
+        // Cập nhật tổng tiền của cart
+        $cart->total_amount = $cart->orderDetails->sum(function ($detail) {
+            return $detail->quantity * $detail->product->price;
+        });
+        $cart->save();
 
         return response()->json([
             'status' => 'success',
@@ -584,5 +595,385 @@ class CartController extends Controller
                 ], 400);
             }
         }
+    }
+
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/applyvoucher/{id_user}",
+     *     tags={"Cart"},
+     *     summary="Apply voucher to user's cart",
+     *     @OA\Parameter(
+     *         name="id_user",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"voucher_code"},
+     *             @OA\Property(property="voucher_code", type="string", example="SALE50")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Voucher applied successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Voucher applied successfully"),
+     *             @OA\Property(property="discount_amount", type="number", example=50000)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid voucher or cart"
+     *     )
+     * )
+     */
+    public function applyVoucher(Request $request, $id_user)
+    {
+        $voucherCode = $request->input('voucher_code');
+        if (!$voucherCode) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Voucher code is required'
+            ], 400);
+        }
+
+        // Tìm voucher
+        $voucher = Voucher::where('code', $voucherCode)
+            ->where('status', 'active')
+            ->where('usage_limit', '>', 0)
+            ->first();
+        if ($voucher) {
+            // Kiểm tra ngày hết hạn
+            if ($voucher->end_date && $voucher->end_date < now()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Voucher has expired'
+                ], 400);
+            }
+
+            // Kiểm tra ngày bắt đầu
+            if ($voucher->start_date && $voucher->start_date > now()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Voucher is not yet valid'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Voucher not found or inactive'
+            ], 400);
+        }
+
+        if (!$voucher) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Voucher is invalid or expired'
+            ], 400);
+        }
+
+        // Tìm cart của user
+        $cart = Order::where('id_user', $id_user)
+            ->where('status', 'cart')
+            ->with('orderDetails.product')
+            ->first();
+
+        if (!$cart || $cart->orderDetails->isEmpty()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Cart is empty or not found'
+            ], 400);
+        }
+
+        // Tính tổng tiền
+        $total = $cart->orderDetails->sum(function ($detail) {
+            return $detail->quantity * $detail->product->price;
+        });
+
+        // Kiểm tra tổng tiền có đủ điều kiện áp dụng voucher không
+        if ($total < $voucher->min_order_amount) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Total amount does not meet the minimum order amount for this voucher'
+            ], 400);
+        }
+        // Kiểm tra tổng tiền có vượt quá giới hạn giảm giá không
+        if ($voucher->max_discount_amount && $total > $voucher->max_discount_amount) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Total amount exceeds the maximum discount limit for this voucher'
+            ], 400);
+        }
+
+
+
+        // Tính giảm giá
+        $discountAmount = 0;
+        if ($voucher->type === 'percentage') {
+            $discountAmount = round($total * ($voucher->discount_amount / 100));
+        } else {
+            $discountAmount = min($voucher->discount_amount, $total);
+        }
+
+        // Gán voucher vào cart
+        $cart->id_voucher = $voucher->id_voucher;
+        $cart->total_amount = $total - $discountAmount;
+        $cart->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Voucher applied successfully',
+            'type' => $voucher->type,
+            'discount_amount' => $discountAmount,
+            'total_after_discount' => $cart->total_amount,
+        ], 200);
+    }
+
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/vouchers",
+     *     tags={"Voucher"},
+     *     summary="Create a new voucher",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"code", "discount_amount", "min_order_amount", "type", "usage_limit", "start_date", "end_date"},
+     *             @OA\Property(property="code", type="string", example="SALE50"),
+     *             @OA\Property(property="discount_amount", type="number", example=50),
+     *             @OA\Property(property="type", type="string", example="percentage", description="percentage or fixed"),
+     *             @OA\Property(property="min_order_amount", type="string", example="1000000", description="Minimum order amount to apply the voucher"),
+     *             @OA\Property(property="max_discount_amount", type="string", example="5000000", description="Maximum discount amount for the voucher"),
+     *             @OA\Property(property="start_date", type="string", format="date", example="2025-07-01"),
+     *             @OA\Property(property="end_date", type="string", format="date", example="2025-07-31"),
+     *             @OA\Property(property="usage_limit", type="integer", example=100),
+     *             @OA\Property(property="description", type="string", example="Get 50% off on your next purchase"),
+     *             @OA\Property(property="note", type="string", example="Limited time offer"),
+     *             @OA\Property(property="status", type="string", example="active")
+     * 
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Voucher created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="voucher", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     )
+     * )
+     */
+    public function createVoucher(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code'           => 'required|string|unique:vouchers,code',
+            'discount_amount' => 'required|numeric|min:1',
+            'type'           => 'required|in:percentage,fixed',
+            'min_order_amount' => 'required|numeric|min:0',
+            'max_discount_amount' => 'required|numeric|min:0',
+            'description'    => 'nullable|string|max:255',
+            'note'           => 'nullable|string|max:255',
+            'start_date'     => 'required|date',
+            'end_date'       => 'required|date|after_or_equal:start_date',
+            'usage_limit'    => 'required|integer|min:1',
+            'start_date'     => 'required|date',
+            'end_date'       => 'required|date|after_or_equal:start_date',
+            'status'         => 'nullable|in:active,inactive'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $voucher = Voucher::create([
+            'code'           => $request->code,
+            'discount_amount' => $request->discount_amount,
+            'type'           => $request->type,
+            'min_order_amount' => $request->min_order_amount,
+            'max_discount_amount' => $request->max_discount_amount,
+            'description'    => $request->description,
+            'note'           => $request->note,
+            'usage_limit'    => $request->usage_limit,
+            'start_date'     => $request->start_date,
+            'end_date'       => $request->end_date,
+            'status'         => $request->status ?? 'active'
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'voucher' => $voucher
+        ], 201);
+    }
+
+
+    /**
+     * @OA\Put(
+     *     path="/api/vouchers/{id_voucher}",
+     *     tags={"Voucher"},
+     *     summary="Update voucher information",
+     *     @OA\Parameter(
+     *         name="id_voucher",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code", type="string", example="SALE50"),
+     *             @OA\Property(property="discount_amount", type="number", example=50),
+     *             @OA\Property(property="type", type="string", example="percentage", description="percentage or fixed"),
+     *             @OA\Property(property="min_order_amount", type="string", example="1000000"),
+     *             @OA\Property(property="max_discount_amount", type="string", example="5000000"),
+     *             @OA\Property(property="start_date", type="string", format="date", example="2025-07-01"),
+     *             @OA\Property(property="end_date", type="string", format="date", example="2025-07-31"),
+     *             @OA\Property(property="usage_limit", type="integer", example=100),
+     *             @OA\Property(property="description", type="string", example="Get 50% off on your next purchase"),
+     *             @OA\Property(property="note", type="string", example="Limited time offer"),
+     *             @OA\Property(property="status", type="string", example="active")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Voucher updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="voucher", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Voucher not found"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     )
+     * )
+     */
+    public function updateVoucher(Request $request, $id_voucher)
+    {
+        $voucher = Voucher::find($id_voucher);
+        if (!$voucher) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Voucher not found'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'code'           => 'sometimes|string|unique:vouchers,code,' . $id_voucher . ',id_voucher',
+            'discount_amount' => 'sometimes|numeric|min:1',
+            'type'           => 'sometimes|in:percentage,fixed',
+            'min_order_amount' => 'sometimes|numeric|min:0',
+            'max_discount_amount' => 'sometimes|min:0',
+            'description'    => 'nullable|string|max:255',
+            'note'           => 'nullable|string|max:255',
+            'start_date'     => 'sometimes|date',
+            'end_date'       => 'sometimes|date|after_or_equal:start_date',
+            'usage_limit'    => 'sometimes|integer|min:1',
+            'status'         => 'nullable|in:active,inactive'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $voucher->update($validator->validated());
+
+        return response()->json([
+            'status' => 'success',
+            'voucher' => $voucher,
+            'validation_errors' => $validator->validated()
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/vouchers",
+     *     tags={"Voucher"},
+     *     summary="Get all vouchers",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of vouchers",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="vouchers",
+     *                 type="array",
+     *                 @OA\Items(type="object")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function getVouchers()
+    {
+        $vouchers = Voucher::all();
+
+        return response()->json([
+            'status' => 'success',
+            'vouchers' => $vouchers
+        ], 200);
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/vouchers/{id_voucher}",
+     *     tags={"Voucher"},
+     *     summary="Delete a voucher by ID",
+     *     @OA\Parameter(
+     *         name="id_voucher",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Voucher deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Voucher deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Voucher not found"
+     *     )
+     * )
+     */
+    public function deleteVoucher($id_voucher)
+    {
+        $voucher = Voucher::find($id_voucher);
+        if (!$voucher) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Voucher not found'
+            ], 404);
+        }
+
+        $voucher->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Voucher deleted successfully'
+        ], 200);
     }
 }
