@@ -1617,6 +1617,201 @@
                 }
             }
         },
+        "/api/reviews/product/{id_product}": {
+            "get": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Get all reviews for a product",
+                "operationId": "dc7c8db9cc5f988200cfa7dd2824112d",
+                "parameters": [
+                    {
+                        "name": "id_product",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of reviews for the product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "reviews": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id_review": {
+                                                        "type": "integer"
+                                                    },
+                                                    "id_user": {
+                                                        "type": "integer"
+                                                    },
+                                                    "id_product": {
+                                                        "type": "integer"
+                                                    },
+                                                    "rating": {
+                                                        "type": "integer"
+                                                    },
+                                                    "content": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_date": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "username": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No reviews found"
+                    }
+                }
+            }
+        },
+        "/api/reviews": {
+            "get": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Get all reviews",
+                "operationId": "2d59b3239a258a496dd777b9b7063425",
+                "responses": {
+                    "200": {
+                        "description": "List of all reviews",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "reviews": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id_review": {
+                                                        "type": "integer"
+                                                    },
+                                                    "id_user": {
+                                                        "type": "integer"
+                                                    },
+                                                    "id_product": {
+                                                        "type": "integer"
+                                                    },
+                                                    "rating": {
+                                                        "type": "integer"
+                                                    },
+                                                    "content": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_date": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "username": {
+                                                        "type": "string"
+                                                    },
+                                                    "product_name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Create a new review",
+                "operationId": "4bbf9727402c88e9bccde1a620612d73",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_user",
+                                    "id_product",
+                                    "rating",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "id_user": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "id_product": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "Sản phẩm rất tốt!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Review created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "review": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -2446,6 +2641,10 @@
         {
             "name": "Product",
             "description": "Product"
+        },
+        {
+            "name": "Review",
+            "description": "Review"
         },
         {
             "name": "User",

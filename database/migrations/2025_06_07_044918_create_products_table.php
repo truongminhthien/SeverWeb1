@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->integer('price');
-            $table->integer('rating')->default(0);
             $table->string('gender')->nullable();
             $table->integer('volume')->nullable();
             $table->string('type')->nullable();

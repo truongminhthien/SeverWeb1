@@ -53,6 +53,10 @@ Route::get('/products/{id_product}', [ProductController::class, 'getProductDetai
 Route::post('/products/{id_product}', [ProductController::class, 'updateProduct']);
 Route::delete('/products/{id_product}', [ProductController::class, 'deleteProduct']);
 
+Route::get('/reviews/product/{id_product}', [ProductController::class, 'getReviewByProduct']);
+Route::get('/reviews', [ProductController::class, 'getAllReview']);
+Route::post('/reviews', [ProductController::class, 'createReview']);
+
 use App\Http\Controllers\API\CartController;
 //
 Route::get('/cart/{id_user}', [CartController::class, 'indexCart']);

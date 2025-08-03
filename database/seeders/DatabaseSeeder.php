@@ -267,7 +267,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Bleu Watch 38mm",
                 "image" => "images/wristwatch/9568364527646.jpg",
                 "price" => 1000000,
-                "rating" => 5,
                 "gender" => "Unisex",
                 "volume" => null,
                 "type" => "Automatic",
@@ -280,7 +279,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Bleu Watch 33mm",
                 "image" => "images/wristwatch/9568365805598.jpg",
                 "price" => 2000000,
-                "rating" => 3,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -293,7 +291,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Bleu Watch Caliber 12.1 38mm",
                 "image" => "images/wristwatch/j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-dos-h10310-9568362463262.jpg",
                 "price" => 10000000,
-                "rating" => 3,
                 "gender" => "Nam",
                 "volume" => null,
                 "type" => "Automatic",
@@ -306,7 +303,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Bleu Watch Caliber 12.1 38mm",
                 "image" => "images/wristwatch/j12-bleu-watch-caliber-12-1-38-mm-blue-steel-sapphire-matte-blue-ceramic-packshot-default-h10310-9568363118622.jpg",
                 "price" => 300823454,
-                "rating" => 5,
                 "gender" => "Nam",
                 "volume" => null,
                 "type" => "Automatic",
@@ -319,7 +315,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm Diamond",
                 "image" => "images/wristwatch/j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-default-h9657-9570157920286.jpg",
                 "price" => 463842891,
-                "rating" => 3,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Automatic",
@@ -332,7 +327,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Bleu Watch Caliber 12.2 33mm Diamond",
                 "image" => "images/wristwatch/j12-bleu-watch-caliber-12-2-33-mm-blue-steel-diamond-matte-blue-ceramic-packshot-dos-h9657-9568362168350.jpg",
                 "price" => 326820872,
-                "rating" => 5,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Automatic",
@@ -345,7 +339,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Code Coco Watch Black Ceramic",
                 "image" => "images/wristwatch/code-coco-watch-black-black-ceramic-steel-diamond-packshot-default-h5148-9564284059678.jpg",
                 "price" => 394221985,
-                "rating" => 3,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -358,7 +351,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Code Coco Watch Black Ceramic",
                 "image" => "images/wristwatch/code-coco-watch-black-black-ceramic-steel-diamond-packshot-other-h5148-8828925378590.jpg",
                 "price" => 350239578,
-                "rating" => 4,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -371,7 +363,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Code Coco Leather Watch Silver",
                 "image" => "images/wristwatch/code-coco-leather-watch-silver-black-steel-diamond-calfskin-packshot-default-h6208-9564290285598.jpg",
                 "price" => 483122978,
-                "rating" => 3,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -384,7 +375,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Code Coco So Black Watch",
                 "image" => "images/wristwatch/code-coco-so-black-watch-black-matte-black-ceramic-steel-diamond-packshot-default-h6426-9564229500958.jpg",
                 "price" => 163317225,
-                "rating" => 3,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -397,7 +387,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Code Coco Watch Black Steel",
                 "image" => "images/wristwatch/code-coco-watch-black-steel-black-ceramic-diamond-packshot-default-h6027-8825232359454.jpg",
                 "price" => 443314743,
-                "rating" => 4,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -410,7 +399,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Boy·Friend Skeleton Watch Beige Gold",
                 "image" => "images/wristwatch/boy-friend-skeleton-watch-beige-beige-gold-diamond-calfskin-packshot-default-h6949-9570157723678.jpg",
                 "price" => 149720049,
-                "rating" => 4,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Manual",
@@ -423,7 +411,6 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Boy·Friend Watch Silver White Gold",
                 "image" => "images/wristwatch/boy-friend-watch-silver-white-gold-diamond-calfskin-packshot-default-h6674-9564215738398.jpg",
                 "price" => 111837711,
-                "rating" => 4,
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -436,7 +423,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel Code Coco Watch Beige Gold",
                 "image" => "images/wristwatch/code-coco-watch-beige-beige-gold-diamond-packshot-default-h5146-8825229705246.jpg",
                 "price" => 140072986,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Quartz",
@@ -449,7 +436,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Baguette Diamond Bezel Watch Caliber 12.2 33mm",
                 "image" => "images/wristwatch/j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-default-h7430-9563849031710.jpg",
                 "price" => 220123909,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Automatic",
@@ -462,7 +449,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Chanel J12 Baguette Diamond Bezel Watch Caliber 12.2 33mm",
                 "image" => "images/wristwatch/j12-baguette-diamond-bezel-watch-caliber-12-2-33-mm-white-white-ceramic-white-gold-diamond-packshot-dos-h7430-9563848081438.jpg",
                 "price" => 258823355,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Automatic",
@@ -471,6 +458,52 @@ class DatabaseSeeder extends Seeder
                 "status" => "active"
             ]
         ]);
+
+        \App\Models\Review::insert([
+            [
+                'id_user' => 1,
+                'id_product' => 1,
+                'rating' => 5,
+                'content' => 'Sản phẩm tuyệt vời, chất lượng tốt và giao hàng nhanh chóng.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'id_product' => 15,
+                'rating' => 4,
+                'content' => 'Rất hài lòng với sản phẩm, sẽ mua lại.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 3,
+                'id_product' => 1,
+                'rating' => 3,
+                'content' => 'Sản phẩm bình thường, không có gì đặc biệt.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'id_product' => 1,
+                'rating' => 5,
+                'content' => 'Chất lượng sản phẩm rất tốt, tôi rất thích.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'id_product' => 2,
+                'rating' => 4,
+                'content' => 'Sản phẩm đẹp, nhưng giá hơi cao.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'id_product' => 2,
+                'rating' => 5,
+                'content' => 'Rất hài lòng với chất lượng và dịch vụ.',
+                'created_date' => now(),
+            ],
+        ]);
+
 
         \App\Models\Voucher::insert([
             [
@@ -507,7 +540,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Nước hoa Chanel No.5",
                 "image" => "images/perfume/perfume1.jpg",
                 "price" => 2450000,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Parfum",
@@ -520,7 +553,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Dior Sauvage Eau de Parfum",
                 "image" => "images/perfume/perfume2.jpg",
                 "price" => 3150000,
-                "rating" => 4,
+
                 "gender" => "Nam",
                 "volume" => 100,
                 "type" => "Eau de Parfum",
@@ -533,7 +566,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Gucci Bloom",
                 "image" => "images/perfume/perfume3.jpg",
                 "price" => 2800000,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Eau de Parfum",
@@ -546,7 +579,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Versace Eros",
                 "image" => "images/perfume/perfume4.jpg",
                 "price" => 2900000,
-                "rating" => 4,
+
                 "gender" => "Nam",
                 "volume" => 100,
                 "type" => "Eau de Toilette",
@@ -559,7 +592,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "YSL Libre",
                 "image" => "images/perfume/perfume5.jpg",
                 "price" => 3200000,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => 90,
                 "type" => "Eau de Parfum",
@@ -572,7 +605,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "CK One",
                 "image" => "images/perfume/perfume6.jpg",
                 "price" => 1950000,
-                "rating" => 3,
+
                 "gender" => "Unisex",
                 "volume" => 100,
                 "type" => "Eau de Toilette",
@@ -585,7 +618,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Burberry Her",
                 "image" => "images/perfume/perfume7.jpg",
                 "price" => 2600000,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Eau de Parfum",
@@ -598,7 +631,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Tom Ford Black Orchid",
                 "image" => "images/perfume/perfume8.jpg",
                 "price" => 4300000,
-                "rating" => 5,
+
                 "gender" => "Unisex",
                 "volume" => 100,
                 "type" => "Parfum",
@@ -611,7 +644,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Marc Jacobs Daisy",
                 "image" => "images/perfume/perfume9.jpg",
                 "price" => 2750000,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Eau de Toilette",
@@ -624,7 +657,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Lancome La Vie Est Belle",
                 "image" => "images/perfume/perfume10.jpg",
                 "price" => 3000000,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => 75,
                 "type" => "Eau de Parfum",
@@ -637,7 +670,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Jo Malone Peony & Blush Suede",
                 "image" => "images/perfume/perfume11.jpg",
                 "price" => 4000000,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Cologne",
@@ -650,7 +683,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Bvlgari Man in Black",
                 "image" => "images/perfume/perfume12.jpg",
                 "price" => 3150000,
-                "rating" => 5,
+
                 "gender" => "Nam",
                 "volume" => 100,
                 "type" => "Eau de Parfum",
@@ -663,7 +696,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Dolce & Gabbana Light Blue",
                 "image" => "images/perfume/perfume13.jpg",
                 "price" => 2400000,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Eau de Toilette",
@@ -676,7 +709,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Givenchy L’Interdit",
                 "image" => "images/perfume/perfume14.jpg",
                 "price" => 3100000,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => 80,
                 "type" => "Eau de Parfum",
@@ -689,7 +722,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Armani My Way",
                 "image" => "images/perfume/perfume15.jpg",
                 "price" => 3500000,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => 90,
                 "type" => "Eau de Parfum",
@@ -702,7 +735,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Kenzo Flower",
                 "image" => "images/perfume/perfume16.jpg",
                 "price" => 2200000,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Eau de Parfum",
@@ -715,7 +748,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Narciso Rodriguez for Her",
                 "image" => "images/perfume/perfume17.jpg",
                 "price" => 3800000,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Eau de Toilette",
@@ -728,7 +761,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Hermès Twilly",
                 "image" => "images/perfume/perfume18.jpg",
                 "price" => 3350000,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => 85,
                 "type" => "Eau de Parfum",
@@ -741,7 +774,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Montblanc Explorer",
                 "image" => "images/perfume/perfume19.jpg",
                 "price" => 2900000,
-                "rating" => 4,
+
                 "gender" => "Nam",
                 "volume" => 100,
                 "type" => "Eau de Parfum",
@@ -754,7 +787,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Viktor & Rolf Flowerbomb",
                 "image" => "images/perfume/perfume20.jpg",
                 "price" => 4100000,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => 100,
                 "type" => "Eau de Parfum",
@@ -770,7 +803,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Rectangle Sunglasses Black Acetate & Calfskin",
                 "image" => "images/classes/rectangle-sunglasses-black-acetate-calfskin-acetate-calfskin-packshot-default-a71716x02153s2228-9567932022814.jpg",
                 "price" => 3740045,
-                "rating" => 4,
+
                 "gender" => "Unisex",
                 "volume" => null,
                 "type" => "Acetate, Calfskin",
@@ -783,7 +816,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Rectangle Sunglasses Black & Gold Acetate",
                 "image" => "images/classes/rectangle-sunglasses-black-gold-acetate-acetate-packshot-default-a71377x08101s2216-8853782790174.jpg",
                 "price" => 24675613,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate",
@@ -796,7 +829,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Cat Eye Sunglasses White Acetate & Glass Pearls",
                 "image" => "images/classes/cat-eye-sunglasses-white-acetate-glass-pearls-acetate-glass-pearls-packshot-default-a71491x08222s5512-9516163104798.jpg",
                 "price" => 30825302,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate, Glass Pearls",
@@ -809,7 +842,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Square Sunglasses Black Acetate",
                 "image" => "images/classes/square-sunglasses-black-acetate-acetate-packshot-extra-a71305x08101s2214-8853776203806.jpg",
                 "price" => 35565985,
-                "rating" => 5,
+
                 "gender" => "Unisex",
                 "volume" => null,
                 "type" => "Acetate",
@@ -822,7 +855,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Cat Eye Sunglasses Black Acetate & Metal",
                 "image" => "images/classes/cat-eye-sunglasses-black-acetate-metal-acetate-metal-packshot-default-a71710x06081s2216-9558779789342.jpg",
                 "price" => 33975021,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate, Metal",
@@ -835,7 +868,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Butterfly Sunglasses Black Acetate & Metal",
                 "image" => "images/classes/butterfly-sunglasses-black-acetate-metal-acetate-metal-packshot-other-a71711x06081s2216-9558780280862.jpg",
                 "price" => 30689476,
-                "rating" => 5,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate, Metal",
@@ -848,7 +881,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Round Sunglasses Gold & Black Metal Calfskin",
                 "image" => "images/classes/round-sunglasses-gold-black-metal-calfskin-metal-calfskin-packshot-extra-a71384x27388l3953-8853784100894.jpg",
                 "price" => 44471385,
-                "rating" => 4,
+
                 "gender" => "Unisex",
                 "volume" => null,
                 "type" => "Metal, Calfskin",
@@ -861,7 +894,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Oval Sunglasses Black Nylon & Metal Leather",
                 "image" => "images/classes/oval-sunglasses-black-nylon-metal-leather-nylon-metal-leather-packshot-default-a71713x06023s0116-9558780117022.jpg",
                 "price" => 39587638,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Nylon, Metal, Leather",
@@ -874,7 +907,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Square Sunglasses Coral Nylon",
                 "image" => "images/classes/square-sunglasses-coral-nylon-nylon-packshot-default-a71692x02081s0714-9558780411934.jpg",
                 "price" => 44170299,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Nylon",
@@ -887,7 +920,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Cat Eye Sunglasses Black Acetate & Strass",
                 "image" => "images/classes/cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-extra-a71667x02569s2216-9550223802398.jpg",
                 "price" => 6117802,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate, Strass",
@@ -900,7 +933,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Cat Eye Sunglasses Black Acetate & Strass",
                 "image" => "images/classes/cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71668x02569s2216-9550229897246.jpg",
                 "price" => 34693608,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate, Strass",
@@ -913,7 +946,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Cat Eye Sunglasses Black Acetate & Strass",
                 "image" => "images/classes/cat-eye-sunglasses-black-acetate-strass-acetate-strass-packshot-default-a71669x02569s2287-9550231666718.jpg",
                 "price" => 45781576,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate, Strass",
@@ -926,7 +959,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Rectangle Sunglasses Red Acetate",
                 "image" => "images/classes/rectangle-sunglasses-red-acetate-acetate-packshot-other-a71649x08101s7911-9546504831006.jpg",
                 "price" => 1504700,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate",
@@ -939,7 +972,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Square Sunglasses Gold Metal Calfskin Denim",
                 "image" => "images/classes/square-sunglasses-gold-metal-calfskin-denim-metal-calfskin-denim-packshot-default-a71693x02609l8819-9563891793950.jpg",
                 "price" => 7636831,
-                "rating" => 4,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Metal, Calfskin, Denim",
@@ -952,7 +985,7 @@ class DatabaseSeeder extends Seeder
                 "name" => "Square Sunglasses Off White Acetate Tweed Leather",
                 "image" => "images/classes/square-sunglasses-off-white-acetate-tweed-leather-acetate-tweed-leather-packshot-default-a71652x22002s8761-9546504667166.jpg",
                 "price" => 15928583,
-                "rating" => 3,
+
                 "gender" => "Nữ",
                 "volume" => null,
                 "type" => "Acetate, Tweed, Leather",

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 
+use App\Models\Review;
+
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 /**
  * @OA\Schema(
  *     schema="Product",
@@ -626,5 +631,229 @@ class ProductController extends Controller
             'status' => 'success',
             'message' => 'Product deleted successfully'
         ], 200);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/reviews/product/{id_product}",
+     *     tags={"Review"},
+     *     summary="Get all reviews for a product",
+     *     @OA\Parameter(
+     *         name="id_product",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of reviews for the product",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="reviews",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id_review", type="integer"),
+     *                     @OA\Property(property="id_user", type="integer"),
+     *                     @OA\Property(property="id_product", type="integer"),
+     *                     @OA\Property(property="rating", type="integer"),
+     *                     @OA\Property(property="content", type="string"),
+     *                     @OA\Property(property="created_date", type="string", format="date-time"),
+     *                     @OA\Property(property="username", type="string"),
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No reviews found"
+     *     )
+     * )
+     */
+    public function getReviewByProduct($id_product)
+    {
+        $reviews = Review::where('id_product', $id_product)
+            ->with('user:id_user,username,image')
+            ->orderByDesc('created_date')
+            ->get();
+
+        if ($reviews->isEmpty()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'No reviews found'
+            ], 404);
+        }
+        // Tính tổng điểm đánh giá và số lượng đánh giá
+        $sum = $reviews->sum('rating');
+        $count = $reviews->count();
+        $averageRating = $count > 0 ? round($sum / $count, 1) : 0;
+        $reviews = [
+            'count' => $count,
+            'average_rating' => $averageRating,
+            'reviews' => $reviews->map(function ($review) {
+                return [
+                    'id_review' => $review->id_review,
+                    'username' => $review->user ? $review->user->username : null,
+                    'image' => $review->user ? url($review->user->image) : null,
+                    'created_date' => $review->created_date,
+                    'rating' => $review->rating,
+                    'content' => $review->content,
+                ];
+            })
+        ];
+        return response()->json([
+            'status' => 'success',
+            'reviews' => $reviews
+        ], 200);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/reviews",
+     *     tags={"Review"},
+     *     summary="Get all reviews",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all reviews",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="reviews",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id_review", type="integer"),
+     *                     @OA\Property(property="id_user", type="integer"),
+     *                     @OA\Property(property="id_product", type="integer"),
+     *                     @OA\Property(property="rating", type="integer"),
+     *                     @OA\Property(property="content", type="string"),
+     *                     @OA\Property(property="created_date", type="string", format="date-time"),
+     *                     @OA\Property(property="username", type="string"),
+     *                     @OA\Property(property="product_name", type="string"),
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function getAllReview()
+    {
+        $reviews = Review::with([
+            'user:id_user,username,image',
+            'product:id_product,name,image'
+        ])->orderByDesc('created_date')->get();
+
+        if ($reviews->isEmpty()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'No reviews found'
+            ], 404);
+        }
+
+        $reviews = $reviews->map(function ($review) {
+            return [
+                'id_review' => $review->id_review,
+                'id_user' => $review->id_user,
+                'username' => $review->user ? $review->user->username : null,
+                'user_image' => $review->user ? url($review->user->image) : null,
+                'created_date' => $review->created_date,
+                'id_product' => $review->id_product,
+                'product_name' => $review->product ? $review->product->name : null,
+                'image' => $review->product ? url($review->product->image) : null,
+                'rating' => $review->rating,
+                'content' => $review->content,
+            ];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'reviews' => $reviews
+        ], 200);
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/reviews",
+     *     tags={"Review"},
+     *     summary="Create a new review",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"id_user", "id_product", "rating", "content"},
+     *             @OA\Property(property="id_user", type="integer", example=1),
+     *             @OA\Property(property="id_product", type="integer", example=2),
+     *             @OA\Property(property="rating", type="integer", example=5),
+     *             @OA\Property(property="content", type="string", example="Sản phẩm rất tốt!")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Review created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="review", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     )
+     * )
+     */
+    public function createReview(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_user' => 'required|integer|exists:users,id_user',
+            'id_product' => 'required|integer|exists:products,id_product',
+            'rating' => 'required|integer|min:1|max:5',
+            'content' => 'required|string|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+        //Kiểm tra user có mua sản phẩm này chưa
+        $hasPurchased = DB::table('order_details')
+            ->join('orders', 'order_details.id_order', '=', 'orders.id_order')
+            ->where('orders.id_user', $request->id_user)
+            ->where('order_details.id_product', $request->id_product)
+            ->where('orders.status', 'completed')
+            ->exists();
+
+        if (!$hasPurchased) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'You can only review products you have purchased'
+            ], 403);
+        }
+
+        // Kiểm tra user đã review sản phẩm này chưa (theo unique index)
+        if (Review::where('id_user', $request->id_user)->where('id_product', $request->id_product)->exists()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'You have already reviewed this product'
+            ], 400);
+        }
+
+        $review = Review::create([
+            'id_user' => $request->id_user,
+            'id_product' => $request->id_product,
+            'rating' => $request->rating,
+            'content' => $request->content,
+            'created_date' => now(),
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'review' => $review
+        ], 201);
     }
 }
