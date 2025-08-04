@@ -423,16 +423,21 @@ class CartController extends Controller
         }
 
         // Lấy thông tin người nhận từ request
-        $cart->total_amount = $cart->orderDetails->sum(function ($detail) {
-            return $detail->quantity * $detail->product->price;
-        });
         $cart->customer_name = $request->input('customer_name');
         $cart->phone = $request->input('phone');
         $cart->address = $request->input('address');
         $cart->payment_method = $request->input('payment_method'); // Mặc định là 'cod' nếu không có
         $cart->status = 'ordered'; // Đánh dấu đã đặt hàng
-        $cart->order_date = now(); // Nếu có cột này
+        $cart->order_date = now();
         $cart->save();
+
+        if ($cart->id_voucher) {
+            $voucher = Voucher::find($cart->id_voucher);
+            if ($voucher) {
+                $voucher->usage_limit -= 1;
+                $voucher->save();
+            }
+        }
 
         return response()->json([
             'status' => 'success',
