@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\OrderDetail;
+use App\Models\Review;
 
 class Product extends Model
 {
@@ -39,5 +40,10 @@ class Product extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class, 'id_product', 'id_product');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'id_product', 'id_product');
     }
 }

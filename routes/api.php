@@ -68,8 +68,13 @@ Route::post('/applyvoucher/{id_user}', [CartController::class, 'applyVoucher']);
 // guest order
 Route::post('/guestcheckout', [CartController::class, 'guestCheckout']);
 
-
+// Voucher management
 Route::post('/vouchers', [CartController::class, 'createVoucher']);
 Route::put('/vouchers/{id_voucher}', [CartController::class, 'updateVoucher']);
 Route::get('/vouchers', [CartController::class, 'getVouchers']);
 Route::delete('/vouchers/{id_voucher}', [CartController::class, 'deleteVoucher']);
+
+// Order management
+Route::get('/orders', [CartController::class, 'getAllOrder']);
+Route::get('/orders/{id_order}', [CartController::class, 'getOrderById']);
+Route::put('/orders/{id_order}/status', [CartController::class, 'updateStatusOrder']);

@@ -764,6 +764,148 @@
                 }
             }
         },
+        "/api/orders": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Get all orders",
+                "operationId": "bf4f0c4611bb5bd2ba7d96fd50bc346e",
+                "responses": {
+                    "200": {
+                        "description": "List of all orders",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "orders": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders/{id_order}": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Get order detail by order ID",
+                "operationId": "2e421f4e0b0390e4a17d1783836630ec",
+                "parameters": [
+                    {
+                        "name": "id_order",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "order": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found"
+                    }
+                }
+            }
+        },
+        "/api/orders/{id_order}/status": {
+            "put": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Update order status",
+                "operationId": "407e3ab105bc77232e810566d5a6370a",
+                "parameters": [
+                    {
+                        "name": "id_order",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "description": "New status: cart, ordered, preparing, shipping, delivered",
+                                        "type": "string",
+                                        "example": "shipping"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Order status updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "order": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/subcategories": {
             "get": {
                 "tags": [
@@ -2633,6 +2775,10 @@
         {
             "name": "Voucher",
             "description": "Voucher"
+        },
+        {
+            "name": "Order",
+            "description": "Order"
         },
         {
             "name": "Category",

@@ -116,8 +116,13 @@ class ProductController extends Controller
      */
     public function featuredProduct()
     {
-        $products = Product::where('rating', '>=', 4)
-            ->where('status', 'active')
+
+        $products = Product::select('products.*', DB::raw('AVG(reviews.rating) as avg_rating'))
+            ->leftJoin('reviews', 'products.id_product', '=', 'reviews.id_product')
+            ->where('products.status', 'active')
+            ->groupBy('products.id_product')
+            ->having('avg_rating', '>=', 4)
+            ->orderByDesc('avg_rating')
             ->limit(20)
             ->get();
 

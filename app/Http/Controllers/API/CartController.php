@@ -597,7 +597,9 @@ class CartController extends Controller
         }
     }
 
-
+    // -----------------------------------------------------------------------
+    //                         <- Apply Voucher to Cart ->
+    // -----------------------------------------------------------------------
 
     /**
      * @OA\Post(
@@ -974,6 +976,205 @@ class CartController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Voucher deleted successfully'
+        ], 200);
+    }
+
+    // -----------------------------------------------------------------------
+    //                         <- order managerment ->
+    // -----------------------------------------------------------------------
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/orders",
+     *     tags={"Order"},
+     *     summary="Get all orders",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all orders",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="orders",
+     *                 type="array",
+     *                 @OA\Items(type="object")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function getAllOrder()
+    {
+        $orders = Order::with(['orderDetails.product', 'user', 'voucher'])
+            ->where('status', '!=', 'cart')
+
+            ->orderByDesc('order_date')
+            ->get();
+
+        $orders = $orders->map(function ($order) {
+            return [
+                'id_order' => $order->id_order,
+                'user' => $order->user ? [
+                    'id_user' => $order->user->id_user,
+                    'username' => $order->user->username,
+                    'email' => $order->user->email,
+                    'phone' => $order->user->phone,
+                ] : null,
+                'total' => $order->total_amount,
+                'customer_name' => $order->customer_name,
+                'phone' => $order->phone,
+                'address' => $order->address,
+                'payment_method' => $order->payment_method,
+                'notes' => $order->notes,
+                'order_date' => $order->order_date,
+                'status' => $order->status,
+                'voucher' => $order->voucher,
+                'order_details' => $order->orderDetails->map(function ($detail) {
+                    return [
+                        'id_order_detail' => $detail->id_order_detail,
+                        'id_product' => $detail->id_product,
+                        'quantity' => $detail->quantity,
+                        'name' => $detail->product->name ?? null,
+                        'price' => $detail->product->price ?? null,
+                        'image' => $detail->product ? url($detail->product->image) : null,
+                    ];
+                }),
+            ];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'orders' => $orders
+        ], 200);
+    }
+
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/orders/{id_order}",
+     *     tags={"Order"},
+     *     summary="Get order detail by order ID",
+     *     @OA\Parameter(
+     *         name="id_order",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Order detail",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="order", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Order not found"
+     *     )
+     * )
+     */
+    public function getOrderById($id_order)
+    {
+        $order = Order::with(['orderDetails.product', 'user', 'voucher'])->find($id_order);
+
+        if (!$order) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Order not found'
+            ], 404);
+        }
+
+        $orderData = [
+            'id_order' => $order->id_order,
+            'total' => $order->total_amount,
+            'customer_name' => $order->customer_name,
+            'phone' => $order->phone,
+            'address' => $order->address,
+            'payment_method' => $order->payment_method,
+            'notes' => $order->notes,
+            'order_date' => $order->order_date,
+            'status' => $order->status,
+            'user' => $order->user,
+            'voucher' => $order->voucher,
+            'order_details' => $order->orderDetails,
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'order' => $orderData
+        ], 200);
+    }
+
+
+
+    /**
+     * @OA\Put(
+     *     path="/api/orders/{id_order}/status",
+     *     tags={"Order"},
+     *     summary="Update order status",
+     *     @OA\Parameter(
+     *         name="id_order",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"status"},
+     *             @OA\Property(property="status", type="string", example="shipping", description="New status: cart, ordered, preparing, shipping, delivered")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Order status updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="order", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Order not found"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     )
+     * )
+     */
+    public function updateStatusOrder(Request $request, $id_order)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|string|in:cart,ordered,preparing,shipping,delivered'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $order = Order::find($id_order);
+        if (!$order) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Order not found'
+            ], 404);
+        }
+
+        $order->status = $request->status;
+        $order->save();
+
+        return response()->json([
+            'status' => 'success',
+            'order' => $order
         ], 200);
     }
 }
