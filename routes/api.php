@@ -78,3 +78,4 @@ Route::delete('/vouchers/{id_voucher}', [CartController::class, 'deleteVoucher']
 Route::get('/orders', [CartController::class, 'getAllOrder']);
 Route::get('/orders/{id_order}', [CartController::class, 'getOrderById']);
 Route::put('/orders/{id_order}/status', [CartController::class, 'updateStatusOrder']);
+Route::put('/orders/{id_order}/cancel', [CartController::class, 'cancelOrder']);

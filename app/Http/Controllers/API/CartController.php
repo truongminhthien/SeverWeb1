@@ -602,6 +602,9 @@ class CartController extends Controller
         }
     }
 
+
+
+
     // -----------------------------------------------------------------------
     //                         <- Apply Voucher to Cart ->
     // -----------------------------------------------------------------------
@@ -1175,6 +1178,92 @@ class CartController extends Controller
         }
 
         $order->status = $request->status;
+        $order->save();
+
+        return response()->json([
+            'status' => 'success',
+            'order' => $order
+        ], 200);
+    }
+
+
+    /**
+     * @OA\Put(
+     *     path="/api/orders/{id_user}/cancel",
+     *     tags={"Order"},
+     *     summary="Cancel an order for a user",
+     *     @OA\Parameter(
+     *         name="id_user",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"id_order", "notes"},
+     *             @OA\Property(property="id_order", type="integer", example=1, description="ID of the order to cancel"),
+     *             @OA\Property(property="notes", type="string", example="Customer requested cancellation", description="Reason or note for cancellation")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Order cancelled successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="order", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Order not found"
+     *     )
+     * )
+     */
+    public function cancelOrder($id_user)
+    {
+        $validator = Validator::make(request()->all(), [
+            'id_order' => 'required|integer|exists:orders,id_order',
+            'notes' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $order = Order::where('id_order', $validator->validated()['id_order'])
+            ->where('id_user', $id_user)
+            ->first();
+
+
+        if (!$order) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Order not found'
+            ], 404);
+        } elseif ($order->status === 'cancelled') {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Order has already been cancelled'
+            ], 400);
+        } elseif (!in_array($order->status, ['ordered', 'preparing'])) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'You can only cancel orders with status ordered or preparing'
+            ], 400);
+        }
+
+        $order->status = 'cancelled';
+        $order->notes = $validator->validated()['notes'] ?? null;
+        $order->order_date = now();
         $order->save();
 
         return response()->json([

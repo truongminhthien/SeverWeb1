@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('payment_method')->nullable();
-            $table->text('notes')->nullable();
-            $table->enum('status', ['cart', 'ordered', 'preparing', 'shipping', 'delivered'])->default('cart');
             $table->timestamp('order_date')->nullable();
+            $table->enum('status', ['cart', 'ordered', 'preparing', 'shipping', 'delivered', 'cancelled'])->default('cart');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
