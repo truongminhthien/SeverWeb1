@@ -1158,7 +1158,7 @@ class CartController extends Controller
     public function updateStatusOrder(Request $request, $id_order)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|string|in:cart,ordered,preparing,shipping,delivered'
+            'status' => 'required|string|in:cart,ordered,preparing,shipping,delivered,cancelled'
         ]);
 
         if ($validator->fails()) {
