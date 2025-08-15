@@ -828,7 +828,7 @@ class ProductController extends Controller
             ->join('orders', 'order_details.id_order', '=', 'orders.id_order')
             ->where('orders.id_user', $request->id_user)
             ->where('order_details.id_product', $request->id_product)
-            ->where('orders.status', 'completed')
+            ->where('orders.status', 'delivered')
             ->exists();
 
         if (!$hasPurchased) {
