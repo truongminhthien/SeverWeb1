@@ -442,7 +442,6 @@ class ProductController extends Controller
                 'id_category' => $validated['id_category'],
                 'price' => $validated['price'],
                 'image' => $path,
-                'rating' => $validated['rating'] ?? 0,
                 'gender' => $validated['gender'] ?? null,
                 'volume' => $validated['volume'] ?? null,
                 'type' => $validated['type'] ?? null,
