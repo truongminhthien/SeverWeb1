@@ -439,6 +439,20 @@ class CartController extends Controller
             }
         }
 
+        // giảm số lượng sản phẩm
+        foreach ($cart->orderDetails as $detail) {
+            $product = Product::find($detail->id_product);
+            if ($product) {
+                $product->quantity -= $detail->quantity;
+                if ($product->quantity < 0) {
+                    $product->quantity = 0;
+                }
+                $product->save();
+            }
+        }
+
+
+
         return response()->json([
             'status' => 'success',
             'message' => 'Order placed successfully'
