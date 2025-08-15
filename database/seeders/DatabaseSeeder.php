@@ -39,12 +39,12 @@ class DatabaseSeeder extends Seeder
             [
                 'category_name' => 'Trang Sức',
                 'category_image' => 'categories/trangsuc.jpg',
-                'status' => 'inactive',
+                'status' => 'active',
             ],
             [
                 'category_name' => 'Trang Điểm',
                 'category_image' => 'categories/trangdiem.jpg',
-                'status' => 'active',
+                'status' => 'inactive',
             ],
 
             [
@@ -113,23 +113,23 @@ class DatabaseSeeder extends Seeder
             // Trang Sức
             [
                 'category_name' => 'Vòng tay Chanel',
-                'status' => 'inactive',
+                'status' => 'active',
                 'id_parent' => 5,
             ],
             [
                 'category_name' => 'Nhẫn Chanel',
-                'status' => 'inactive',
+                'status' => 'active',
                 'id_parent' => 5,
             ],
             // Trang Điểm
             [
                 'category_name' => 'Son môi Chanel',
-                'status' => 'active',
+                'status' => 'inactive',
                 'id_parent' => 6,
             ],
             [
                 'category_name' => 'Phấn nền Chanel',
-                'status' => 'active',
+                'status' => 'inactive',
                 'id_parent' => 6,
             ],
             [
@@ -459,50 +459,6 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        \App\Models\Review::insert([
-            [
-                'id_user' => 1,
-                'id_product' => 1,
-                'rating' => 5,
-                'content' => 'Sản phẩm tuyệt vời, chất lượng tốt và giao hàng nhanh chóng.',
-                'created_date' => now(),
-            ],
-            [
-                'id_user' => 1,
-                'id_product' => 15,
-                'rating' => 4,
-                'content' => 'Rất hài lòng với sản phẩm, sẽ mua lại.',
-                'created_date' => now(),
-            ],
-            [
-                'id_user' => 3,
-                'id_product' => 1,
-                'rating' => 3,
-                'content' => 'Sản phẩm bình thường, không có gì đặc biệt.',
-                'created_date' => now(),
-            ],
-            [
-                'id_user' => 2,
-                'id_product' => 1,
-                'rating' => 5,
-                'content' => 'Chất lượng sản phẩm rất tốt, tôi rất thích.',
-                'created_date' => now(),
-            ],
-            [
-                'id_user' => 1,
-                'id_product' => 2,
-                'rating' => 4,
-                'content' => 'Sản phẩm đẹp, nhưng giá hơi cao.',
-                'created_date' => now(),
-            ],
-            [
-                'id_user' => 2,
-                'id_product' => 2,
-                'rating' => 5,
-                'content' => 'Rất hài lòng với chất lượng và dịch vụ.',
-                'created_date' => now(),
-            ],
-        ]);
 
 
         \App\Models\Voucher::insert([
@@ -802,7 +758,7 @@ class DatabaseSeeder extends Seeder
             [
                 "id_category" => 19,
                 "name" => "Vòng tay Coco Crush Beige Gold",
-                "image" => "images/jewelry/images/jewelry/coco-crush-bracelet-beige-beige-gold-packshot-default-j12324-9571629629470.jpg",
+                "image" => "images/jewelry/coco-crush-bracelet-beige-beige-gold-packshot-default-j12324-9571629629470.jpg",
                 "price" => 2780000,
                 "gender" => "Unisex",
                 "volume" => null,
@@ -1274,6 +1230,123 @@ class DatabaseSeeder extends Seeder
                 "id_product" => 6,
                 "discount" => 20000,
                 "quantity" => 1,
+            ],
+        ]);
+
+
+        \App\Models\Review::insert([
+            [
+                'id_user' => 1,
+                'id_product' => 1,
+                'rating' => 5,
+                'content' => 'Sản phẩm tuyệt vời, chất lượng tốt và giao hàng nhanh chóng.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'id_product' => 15,
+                'rating' => 4,
+                'content' => 'Rất hài lòng với sản phẩm, sẽ mua lại.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 3,
+                'id_product' => 1,
+                'rating' => 3,
+                'content' => 'Sản phẩm bình thường, không có gì đặc biệt.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'id_product' => 1,
+                'rating' => 5,
+                'content' => 'Chất lượng sản phẩm rất tốt, tôi rất thích.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'id_product' => 2,
+                'rating' => 4,
+                'content' => 'Sản phẩm đẹp, nhưng giá hơi cao.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'id_product' => 2,
+                'rating' => 5,
+                'content' => 'Rất hài lòng với chất lượng và dịch vụ.',
+                'created_date' => now(),
+            ],
+            // Thêm 10 đánh giá mới
+            [
+                'id_user' => 2,
+                'id_product' => 22, // Trang sức
+                'rating' => 5,
+                'content' => 'Vòng tay thiết kế tinh xảo, rất sang trọng.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 3,
+                'id_product' => 23, // Trang sức
+                'rating' => 4,
+                'content' => 'Nhẫn đẹp, vừa tay, giao hàng nhanh.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'id_product' => 24, // Trang sức
+                'rating' => 5,
+                'content' => 'Nhẫn kim cương sáng, rất nổi bật khi đeo.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'id_product' => 30, // Mắt kính
+                'rating' => 4,
+                'content' => 'Kính mát nhẹ, đeo lâu không bị đau tai.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 3,
+                'id_product' => 31, // Mắt kính
+                'rating' => 5,
+                'content' => 'Thiết kế kính rất thời trang, phù hợp với nhiều kiểu mặt.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'id_product' => 32, // Mắt kính
+                'rating' => 3,
+                'content' => 'Kính đẹp nhưng hộp đựng hơi đơn giản.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'id_product' => 40, // Nước hoa
+                'rating' => 5,
+                'content' => 'Hương thơm nước hoa giữ lâu, rất quyến rũ.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 3,
+                'id_product' => 41, // Nước hoa
+                'rating' => 4,
+                'content' => 'Mùi nước hoa nhẹ nhàng, phù hợp đi làm.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 1,
+                'id_product' => 42, // Nước hoa
+                'rating' => 5,
+                'content' => 'Nước hoa unisex, cả nhà đều dùng được.',
+                'created_date' => now(),
+            ],
+            [
+                'id_user' => 2,
+                'id_product' => 43, // Nước hoa
+                'rating' => 4,
+                'content' => 'Giá hợp lý, mùi thơm dễ chịu.',
+                'created_date' => now(),
             ],
         ]);
 
