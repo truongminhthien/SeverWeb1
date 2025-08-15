@@ -112,7 +112,7 @@ class DatabaseSeeder extends Seeder
             ],
             // Trang Sức
             [
-                'category_name' => 'Vòng cổ Chanel',
+                'category_name' => 'Vòng tay Chanel',
                 'status' => 'inactive',
                 'id_parent' => 5,
             ],
@@ -794,6 +794,190 @@ class DatabaseSeeder extends Seeder
                 "description" => "Bùng nổ hương hoa đầy mê hoặc và quyến rũ.",
                 "note" => "Hoa nhài, hoa cam, hoắc hương",
                 "status" => "active",
+            ]
+        ]);
+
+
+        \App\Models\Product::insert([
+            [
+                "id_category" => 19,
+                "name" => "Vòng tay Coco Crush Beige Gold",
+                "image" => "images/jewelry/images/jewelry/coco-crush-bracelet-beige-beige-gold-packshot-default-j12324-9571629629470.jpg",
+                "price" => 2780000,
+                "gender" => "Unisex",
+                "volume" => null,
+                "type" => "Beige Gold",
+                "description" => "Vòng tay Coco Crush bằng vàng beige, thiết kế sang trọng, phù hợp mọi dịp.",
+                "note" => "Chất liệu vàng beige cao cấp, phong cách hiện đại.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 19,
+                "name" => "Vòng tay Coco Beige Gold",
+                "image" => "images/jewelry/coco-bracelet-beige-beige-gold-packshot-default-j12303-9563791097886.jpg",
+                "price" => 2390000,
+                "gender" => "Unisex",
+                "volume" => null,
+                "type" => "Beige Gold",
+                "description" => "Vòng tay Coco bằng vàng beige, thiết kế thanh lịch, dễ phối đồ.",
+                "note" => "Chất liệu vàng beige, phù hợp cả nam và nữ.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 19,
+                "name" => "Vòng tay Coco Đỏ Ruby Beige Gold",
+                "image" => "images/jewelry/coco-bracelet-red-beige-beige-gold-ruby-packshot-default-j13044-9572044308510.jpg",
+                "price" => 2440000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "Beige Gold, Ruby",
+                "description" => "Vòng tay Coco phối vàng beige và đá ruby đỏ, nổi bật và quyến rũ.",
+                "note" => "Đính đá ruby, chất liệu vàng beige.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 19,
+                "name" => "Vòng tay Eternal N°5 Beige Gold Diamond",
+                "image" => "images/jewelry/eternal-n-5-bracelet-beige-beige-gold-diamond-packshot-default-j12812-9568831668254.jpg",
+                "price" => 1520000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "Beige Gold, Diamond",
+                "description" => "Vòng tay Eternal N°5 bằng vàng beige đính kim cương, biểu tượng vĩnh cửu.",
+                "note" => "Kim cương thiên nhiên, vàng beige.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 19,
+                "name" => "Vòng tay Extrait de N°5 Beige Gold Diamond",
+                "image" => "images/jewelry/extrait-de-n-5-bracelet-beige-beige-gold-diamond-packshot-default-j12428-9563792801822.jpg",
+                "price" => 1220000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "Beige Gold, Diamond",
+                "description" => "Vòng tay Extrait de N°5 vàng beige đính kim cương, thiết kế tinh tế.",
+                "note" => "Chất liệu vàng beige, kim cương thiên nhiên.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 19,
+                "name" => "Vòng tay Bouton de Camélia White Gold Diamond",
+                "image" => "images/jewelry/bouton-de-camelia-supple-bracelet-white-white-gold-diamond-packshot-default-j12065-9575525351454.jpg",
+                "price" => 1170000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "White Gold, Diamond",
+                "description" => "Vòng tay Bouton de Camélia bằng vàng trắng đính kim cương, hoa trà biểu tượng.",
+                "note" => "Thiết kế hoa trà, vàng trắng, kim cương.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 19,
+                "name" => "Vòng tay Coco Crush White Gold Diamond",
+                "image" => "images/jewelry/coco-crush-bracelet-white-diamond-white-gold-packshot-default-j11162-9564997025822.jpg",
+                "price" => 2890000,
+                "gender" => "Unisex",
+                "volume" => null,
+                "type" => "White Gold, Diamond",
+                "description" => "Vòng tay Coco Crush vàng trắng đính kim cương, phong cách cá tính.",
+                "note" => "Chất liệu vàng trắng, kim cương thiên nhiên.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Coco Crush Beige Gold",
+                "image" => "images/jewelry/coco-crush-ring-beige-beige-gold-packshot-default-j11785-8829173137438.jpg",
+                "price" => 1080000,
+                "gender" => "Unisex",
+                "volume" => null,
+                "type" => "Beige Gold",
+                "description" => "Nhẫn Coco Crush vàng beige, thiết kế đơn giản, tinh tế.",
+                "note" => "Chất liệu vàng beige, phù hợp mọi phong cách.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Coco Crush Beige Gold Diamond",
+                "image" => "images/jewelry/coco-crush-ring-beige-beige-gold-diamond-packshot-default-j13162-9574508462110.jpg",
+                "price" => 1500000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "Beige Gold, Diamond",
+                "description" => "Nhẫn Coco Crush vàng beige đính kim cương, sang trọng và nổi bật.",
+                "note" => "Kim cương thiên nhiên, vàng beige.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Coco Crush Beige Gold Diamond",
+                "image" => "images/jewelry/coco-crush-ring-beige-beige-gold-diamond-packshot-default-j11786-8829173170206.jpg",
+                "price" => 1810000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "Beige Gold, Diamond",
+                "description" => "Nhẫn Coco Crush vàng beige đính kim cương, thiết kế tinh xảo.",
+                "note" => "Chất liệu vàng beige, kim cương.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Extrait de N°5 Beige Gold Diamond",
+                "image" => "images/jewelry/extrait-de-n-5-ring-beige-beige-gold-diamond-packshot-default-j12400-9572539891742.jpg",
+                "price" => 1680000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "Beige Gold, Diamond",
+                "description" => "Nhẫn Extrait de N°5 vàng beige đính kim cương, biểu tượng Chanel.",
+                "note" => "Kim cương thiên nhiên, vàng beige.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Eternal N°5 White Gold Diamond",
+                "image" => "images/jewelry/eternal-n-5-ring-white-white-gold-diamond-packshot-default-j12002-9575042646046.jpg",
+                "price" => 1530000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "White Gold, Diamond",
+                "description" => "Nhẫn Eternal N°5 vàng trắng đính kim cương, thiết kế thanh lịch.",
+                "note" => "Chất liệu vàng trắng, kim cương.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Coco Crush Toi et Moi Beige Gold White Gold Diamond",
+                "image" => "images/jewelry/coco-crush-toi-et-moi-ring-beige-white-beige-gold-white-gold-diamond-packshot-default-j11971-9564216000542.jpg",
+                "price" => 1430000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "Beige Gold, White Gold, Diamond",
+                "description" => "Nhẫn Coco Crush Toi et Moi phối vàng beige, vàng trắng và kim cương, biểu tượng tình yêu.",
+                "note" => "Thiết kế đôi, vàng beige, vàng trắng, kim cương.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Coco Crush White Gold Diamond",
+                "image" => "images/jewelry/coco-crush-ring-white-white-gold-diamond-packshot-default-j11871-8830938480670.jpg",
+                "price" => 2370000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "White Gold, Diamond",
+                "description" => "Nhẫn Coco Crush vàng trắng đính kim cương, phong cách sang trọng.",
+                "note" => "Chất liệu vàng trắng, kim cương thiên nhiên.",
+                "status" => "active"
+            ],
+            [
+                "id_category" => 20,
+                "name" => "Nhẫn Fil de Camélia Diamond White Gold",
+                "image" => "images/jewelry/fil-de-camelia-ring-diamond-white-gold-packshot-default-j2579-9564997910558.jpg",
+                "price" => 2500000,
+                "gender" => "Nữ",
+                "volume" => null,
+                "type" => "White Gold, Diamond",
+                "description" => "Nhẫn Fil de Camélia vàng trắng đính kim cương, thiết kế hoa trà tinh tế.",
+                "note" => "Hoa trà, vàng trắng, kim cương.",
+                "status" => "active"
             ]
         ]);
 
