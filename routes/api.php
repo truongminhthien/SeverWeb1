@@ -31,6 +31,7 @@ Route::post('/reset-password', [UserController::class, 'resetPassword']);
 Route::get('/order-history/{id}', [UserController::class, 'orderHistory']);
 Route::post('/users', [UserController::class, 'createUserAtAdmin']);
 Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
+Route::put('/users/{id}/password', [UserController::class, 'updatePassword']);
 
 use App\Http\Controllers\API\CategoryController;
 
@@ -79,3 +80,9 @@ Route::get('/orders', [CartController::class, 'getAllOrder']);
 Route::get('/orders/{id_order}', [CartController::class, 'getOrderById']);
 Route::put('/orders/{id_order}/status', [CartController::class, 'updateStatusOrder']);
 Route::put('/orders/{id_order}/cancel', [CartController::class, 'cancelOrder']);
+
+use App\Http\Controllers\API\ArticleController;
+
+Route::get('/articles', [ArticleController::class, 'getAllArticle']);
+Route::post('/articles', [ArticleController::class, 'createArticle']);
+Route::post('/articles/{id_articles}', [ArticleController::class, 'updateArticle']);

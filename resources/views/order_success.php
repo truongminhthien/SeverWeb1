@@ -87,7 +87,11 @@
 <body>
     <div class="order-container">
         <h2>Order Placed Successfully!</h2>
-        <p>Hello <?php echo htmlspecialchars($order['customer_name']); ?>,</p>
+        <?php if ($order['id_user']['role'] === 0): ?>
+            <p>Hello <?php echo htmlspecialchars($order['id_user']['username']); ?>,</p>
+        <?php else: ?>
+            <p>Hello <?php echo htmlspecialchars($order['customer_name']); ?>,</p>
+        <?php endif; ?>
         <p>Thank you for placing your order with our store.</p>
 
         <div class="highlight">
@@ -121,8 +125,12 @@
         <p>Shipping Address: <b><?php echo htmlspecialchars($order['address']); ?></b></p>
         <p>Phone Number: <b><?php echo htmlspecialchars($order['phone']); ?></b></p>
         <hr>
-
-        <p><strong>Note:</strong> Please register an account with this email to track your order status.</p>
+        <?php if ($order['id_user']['role'] === 0): ?>
+            <p><strong>Thank you for your order!</strong></p>
+            <p>Your order has been successfully placed and is being processed.</p>
+        <?php else: ?>
+            <p><strong>Note:</strong> Please register an account with this email to track your order status.</p>
+        <?php endif; ?>
         <hr>
 
         <p>If you have any questions, feel free to contact us:</p>

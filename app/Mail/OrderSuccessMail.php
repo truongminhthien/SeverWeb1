@@ -28,6 +28,11 @@ class OrderSuccessMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        if ($this->order['id_user']['role'] === 0) {
+            return new Envelope(
+                subject: 'Order placed successfully',
+            );
+        }
         return new Envelope(
             subject: 'Order placed successfully. Please register an account with this email.',
         );

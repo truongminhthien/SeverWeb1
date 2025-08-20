@@ -733,4 +733,91 @@ class UserController extends Controller
             'message' => 'User deleted successfully'
         ], 200);
     }
+
+
+
+    /**
+     * @OA\Put(
+     *     path="/api/users/{id}/password",
+     *     tags={"User"},
+     *     summary="Update user password",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"old_password", "new_password", "confirm_password"},
+     *             @OA\Property(property="old_password", type="string", format="password", example="oldpass123"),
+     *             @OA\Property(property="new_password", type="string", format="password", example="newpass456"),
+     *             @OA\Property(property="confirm_password", type="string", format="password", example="newpass456")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Password updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Password updated successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
+     */
+    public function updatePassword(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required|string',
+            'new_password' => 'required|string|min:6',
+            'confirm_password' => 'required|string|min:6'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Old password is incorrect'
+            ], 400);
+        }
+
+        if ($request->new_password !== $request->confirm_password) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'New passwords do not match'
+            ], 400);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Password updated successfully'
+        ], 200);
+    }
 }

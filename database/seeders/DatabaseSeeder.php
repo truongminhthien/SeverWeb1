@@ -245,19 +245,11 @@ class DatabaseSeeder extends Seeder
                 [
                     'username' => 'Tuấn Hiệp',
                     'password' => bcrypt('123'),
-                    'email' => 'tuanhiep@gmail.com',
+                    'email' => 'hiepvo066@gmail.com',
                     'phone' => 123456789,
                     'address' => '123 Admin Street',
                     'role' => 1,
-                ],
-                [
-                    'username' => 'Minh Hiệp',
-                    'password' => bcrypt('123'),
-                    'email' => 'minhhiep@gmail.com',
-                    'phone' => 123456789,
-                    'address' => '123 Admin Street',
-                    'role' => 1,
-                ],
+                ]
             ]
         );
 
@@ -1458,6 +1450,51 @@ class DatabaseSeeder extends Seeder
                 'rating' => 4,
                 'content' => 'Giá hợp lý, mùi thơm dễ chịu.',
                 'created_date' => now(),
+            ],
+        ]);
+
+        \App\Models\Article::insert([
+            [
+                'id_user' => 2,
+                'title' => 'Bảo tàng Nghệ thuật Leeum, Seoul',
+                'content' => 'Chương trình dành cho công chúng đầu tiên của Leeum, IDEA Museum, là một kế hoạch hoạt động trong nhiều năm quy tụ nhiều nghệ sĩ, triết gia và nhà khoa học Hàn Quốc và quốc tế. Hội thảo khai mạc với chủ đề: “Ecological Turns: What Should We Then Notice?” (tạm dịch: Những Biến Chuyển Về Mặt Sinh Thái: Rồi Chúng Ta Sẽ Nhận Thấy Điều Gì?) bao gồm các tham luận của các học giả danh tiếng về vấn đề khủng hoảng khí hậu và tính bền vững, kết hợp các buổi chiếu phim được chọn lọc từ các tác phẩm của các nghệ sĩ có cái nhìn xa và rộng về vấn đề này. Một tuyển tập các bài luận được in ra sẽ được công bố hằng năm, và một nền tảng trực tuyến riêng sẽ được ra mắt vào năm 2024.',
+                'image' => 'article/1702292176592-mashupjpg.jpg',
+                'status' => 'published',
+            ],
+            [
+                'id_user' => 2,
+                'title' => 'Bảo tàng Nghệ thuật Đương đại Chicago (MCA), Hoa Kỳ',
+                'content' => 'Contemporary DNA, chương trình mới của MCA, tập trung tìm kiếm và giới thiệu các nghệ sĩ tài năng ít được biết đến thông qua bộ sưu tập của bảo tàng – ở khu vực Global South và rộng hơn. MCA sẽ khởi động kế hoạch hoạt động trong nhiều năm này vào tháng 2 năm 2024, chào đón hai Nghiên cứu sinh Giám tuyển của CHANEL mỗi năm với học bổng sẽ cung cấp thông tin về các cuộc triển lãm, mua tác phẩm, và đóng góp cho “Dialogues”, chương trình dành cho công chúng của bảo tàng.',
+                'image' => 'article/1707149592085-leeum.jpg',
+                'status' => 'published',
+            ],
+            [
+                'id_user' => 2,
+                'title' => 'Bảo tàng Nghệ thuật Đương đại Chicago (MCA), Hoa Kỳ',
+                'content' => 'Contemporary DNA, chương trình mới của MCA, tập trung tìm kiếm và giới thiệu các nghệ sĩ tài năng ít được biết đến thông qua bộ sưu tập của bảo tàng – ở khu vực Global South và rộng hơn. MCA sẽ khởi động kế hoạch hoạt động trong nhiều năm này vào tháng 2 năm 2024, chào đón hai Nghiên cứu sinh Giám tuyển của CHANEL mỗi năm với học bổng sẽ cung cấp thông tin về các cuộc triển lãm, mua tác phẩm, và đóng góp cho “Dialogues”, chương trình dành cho công chúng của bảo tàng.',
+                'image' => 'article/1707149582027-npg.jpg',
+                'status' => 'draft',
+            ],
+            [
+                'id_user' => 3,
+                'title' => 'Triển lãm Nghệ thuật Đương đại tại Paris',
+                'content' => 'Triển lãm nghệ thuật đương đại tại Paris năm 2024 quy tụ nhiều nghệ sĩ trẻ tài năng đến từ khắp nơi trên thế giới. Sự kiện này tập trung vào các chủ đề về đổi mới sáng tạo, môi trường và sự đa dạng văn hóa. Khách tham quan sẽ được trải nghiệm các tác phẩm nghệ thuật sắp đặt, tranh vẽ và điêu khắc hiện đại, đồng thời tham gia các buổi tọa đàm với các nghệ sĩ và nhà phê bình nghệ thuật nổi tiếng.',
+                'image' => 'article/1707149572602-pompidou.jpg',
+                'status' => 'published',
+            ],
+            [
+                'id_user' => 1,
+                'title' => 'Chương trình Nghệ thuật Số tại Tokyo',
+                'content' => 'Bảo tàng Nghệ thuật Số Tokyo vừa khai trương chương trình triển lãm mới với chủ đề “Kết nối qua công nghệ”. Chương trình giới thiệu các tác phẩm nghệ thuật số, thực tế ảo và tương tác, mang đến cho khách tham quan trải nghiệm độc đáo giữa nghệ thuật và công nghệ hiện đại. Ngoài ra, bảo tàng còn tổ chức các workshop về sáng tạo kỹ thuật số dành cho sinh viên và người yêu nghệ thuật.',
+                'image' => 'article/1707149596327-psa.jpg',
+                'status' => 'published',
+            ],
+            [
+                'id_user' => 2,
+                'title' => 'Sự kiện Nghệ thuật Đa phương tiện tại London',
+                'content' => 'London Art Space tổ chức sự kiện nghệ thuật đa phương tiện với sự tham gia của các nghệ sĩ quốc tế. Sự kiện bao gồm các buổi trình diễn ánh sáng, âm thanh và video nghệ thuật, tạo nên không gian sáng tạo và truyền cảm hứng cho cộng đồng yêu nghệ thuật. Chương trình còn có các buổi giao lưu, chia sẻ kinh nghiệm giữa các nghệ sĩ và khách tham quan.',
+                'image' => 'article/1719578922632-investingincircularityjpg_2504x4008.jpg',
+                'status' => 'deleted',
             ],
         ]);
 

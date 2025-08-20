@@ -451,12 +451,48 @@ class CartController extends Controller
             }
         }
 
-
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Order placed successfully'
-        ], 200);
+        $order = $cart->load('orderDetails.product');
+        $dataorder = [
+            'id_order' => $order->id_order,
+            'id_user' => [
+                'email' => $user->email,
+                'name' => $user->username,
+                'role' => $user->role,
+            ],
+            'total_amount' => $order->total_amount,
+            'customer_name' => $order->customer_name,
+            'phone' => $order->phone,
+            'address' => $order->address,
+            'payment_method' => $order->payment_method,
+            'status' => $order->status,
+            'order_date' => $order->order_date,
+            'order_detail' => $order->orderDetails->map(function ($detail) {
+                return [
+                    'id_order_detail' => $detail->id_order_detail,
+                    'id_product' => $detail->id_product,
+                    'quantity' => $detail->quantity,
+                    'name' => $detail->product->name,
+                    'price' => $detail->product->price,
+                    'image' => url($detail->product->image),
+                ];
+            })->toArray()
+        ];
+        if ($cart->save()) {
+            // Gửi email thông báo đặt hàng thành công
+            try {
+                Mail::to($user->email)->send(new OrderSuccessMail($dataorder));
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Order placed successfully',
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Order placed but failed to send confirmation email. Please try again later.',
+                    'error' => $e->getMessage()
+                ], 400);
+            }
+        }
     }
 
     public function createUserGuest($username, $email, $phone)
