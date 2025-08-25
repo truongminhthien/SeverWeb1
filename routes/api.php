@@ -86,3 +86,4 @@ use App\Http\Controllers\API\ArticleController;
 Route::get('/articles', [ArticleController::class, 'getAllArticle']);
 Route::post('/articles', [ArticleController::class, 'createArticle']);
 Route::post('/articles/{id_articles}', [ArticleController::class, 'updateArticle']);
+Route::delete('/articles/{id_articles}', [ArticleController::class, 'deleteArticle']);
