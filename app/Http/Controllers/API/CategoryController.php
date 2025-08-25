@@ -447,4 +447,54 @@ class CategoryController extends Controller
             ]
         ], 200);
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/categories/{id_category}",
+     *     tags={"Category"},
+     *     summary="Delete a category by ID",
+     *     @OA\Parameter(
+     *         name="id_category",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Category deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Category not found"
+     *     )
+     * )
+     */
+    public function deleteCategory($id_category)
+    {
+        $category = Category::find($id_category);
+        if (!$category) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        // Xóa ảnh nếu có
+        if ($category->category_image && file_exists(public_path($category->category_image))) {
+            @unlink(public_path($category->category_image));
+        }
+
+        // $category->delete();
+        $category->status = 'deleted';
+        $category->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Category deleted successfully'
+        ], 200);
+    }
 }

@@ -1035,7 +1035,9 @@ class CartController extends Controller
             ], 404);
         }
 
-        $voucher->delete();
+        // $voucher->delete();
+        $voucher->status = 'deleted';
+        $voucher->save();
 
         return response()->json([
             'status' => 'success',

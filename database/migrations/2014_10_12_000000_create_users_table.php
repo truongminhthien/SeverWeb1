@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->integer('role')->comment('0: User, 1: Admin, 2: Guest')->default(0);
             $table->string('code')->nullable();
-            $table->enum('status', ['active', 'inactive', 'banned', 'delete'])->default('active');
+            $table->enum('status', ['active', 'inactive', 'delete'])->default('active');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

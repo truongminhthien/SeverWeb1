@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('category_image')->nullable();
             $table->integer('id_parent')->default(0);
             $table->string('slug')->unique();
-            $table->enum('status', ['active', 'inactive'])->default('inactive');
+            $table->enum('status', ['active', 'inactive', 'deleted'])->default('inactive');
             $table->timestamps();
         });
     }

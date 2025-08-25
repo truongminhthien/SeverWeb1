@@ -26,7 +26,7 @@ return new class extends Migration
             $table->decimal('discount', 5, 2)->nullable();
             $table->text('description')->nullable();
             $table->text('note')->nullable();
-            $table->enum('status', ['active', 'inactive', 'delete'])->default('inactive');
+            $table->enum('status', ['active', 'inactive', 'deleted'])->default('inactive');
             $table->timestamps();
         });
     }

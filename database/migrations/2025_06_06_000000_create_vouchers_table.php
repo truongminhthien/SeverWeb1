@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('note')->nullable();
             $table->enum('type', ['percentage', 'fixed'])->default('fixed');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
         });
     }

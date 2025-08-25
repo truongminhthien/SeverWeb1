@@ -623,7 +623,7 @@ class ProductController extends Controller
         }
 
         // Nếu muốn xóa mềm (soft delete), chỉ đổi status
-        $product->status = 'delete';
+        $product->status = 'deleted';
         $product->save();
 
         // Nếu muốn xóa cứng (hard delete), dùng:

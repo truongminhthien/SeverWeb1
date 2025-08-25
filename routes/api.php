@@ -41,6 +41,7 @@ Route::post('/createcategories', [CategoryController::class, 'createCategory']);
 Route::post('/createsubcategories', [CategoryController::class, 'createSubCategory']);
 Route::post('/categories/{id_category}', [CategoryController::class, 'updateCategory']);
 Route::put('/subcategories/{id_subcategory}', [CategoryController::class, 'updateSubCategory']);
+Route::delete('/categories/{id_category}', [CategoryController::class, 'deleteCategory']);
 
 use App\Http\Controllers\API\ProductController;
 
