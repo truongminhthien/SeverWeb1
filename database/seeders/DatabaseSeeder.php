@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'category_name' => 'Túi xách',
-                'category_image' => 'categories/tui_xach.jpg',
+                'category_image' => 'categories/tuixach.jpg',
                 'status' => 'inactive',
             ],
         ];
@@ -496,8 +496,8 @@ class DatabaseSeeder extends Seeder
             [
                 'code' => 'CHANEL100000',
                 'discount_amount' => 100000,
-                'max_discount_amount' => 5000000,
-                'min_order_amount' => 500000,
+                'max_discount_amount' => 1000000,
+                'min_order_amount' => 5000000,
                 'start_date' => '2025-01-01',
                 'end_date' => '2025-12-31',
                 'usage_limit' => 100,

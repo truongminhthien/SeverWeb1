@@ -768,15 +768,6 @@ class CartController extends Controller
                 'message' => 'Total amount does not meet the minimum order amount for this voucher'
             ], 400);
         }
-        // Kiểm tra tổng tiền có vượt quá giới hạn giảm giá không
-        if ($voucher->max_discount_amount && $total > $voucher->max_discount_amount) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Total amount exceeds the maximum discount limit for this voucher'
-            ], 400);
-        }
-
-
 
         // Tính giảm giá
         $discountAmount = 0;
@@ -846,7 +837,7 @@ class CartController extends Controller
             'discount_amount' => 'required|numeric|min:1',
             'type'           => 'required|in:percentage,fixed',
             'min_order_amount' => 'required|numeric|min:0',
-            'max_discount_amount' => 'required|numeric|min:0',
+            'max_discount_amount' => 'nullable|numeric|min:0',
             'description'    => 'nullable|string|max:255',
             'note'           => 'nullable|string|max:255',
             'start_date'     => 'required|date',
