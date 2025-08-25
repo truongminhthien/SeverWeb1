@@ -261,10 +261,11 @@ class CartController extends Controller
 
         // Cập nhật số lượng
         $orderDetail->quantity = $quantity;
+        $orderDetail->save();
+
         $cart->total_amount = $cart->orderDetails->sum(function ($detail) {
             return $detail->quantity * $detail->product->price;
         });
-        $orderDetail->save();
         $cart->save();
 
         return response()->json([
@@ -423,12 +424,15 @@ class CartController extends Controller
         }
 
         // Lấy thông tin người nhận từ request
+        if ($request->input('payment_method') === 'cod') {
+            $cart->total_amount = $cart->total_amount + 30000;
+        }
         $cart->customer_name = $request->input('customer_name');
         $cart->phone = $request->input('phone');
         $cart->address = $request->input('address');
         $cart->payment_method = $request->input('payment_method'); // Mặc định là 'cod' nếu không có
-        $cart->status = 'ordered'; // Đánh dấu đã đặt hàng
         $cart->order_date = now();
+        $cart->status = 'ordered';
         $cart->save();
 
         if ($cart->id_voucher) {
@@ -477,8 +481,8 @@ class CartController extends Controller
                 ];
             })->toArray()
         ];
+
         if ($cart->save()) {
-            // Gửi email thông báo đặt hàng thành công
             try {
                 Mail::to($user->email)->send(new OrderSuccessMail($dataorder));
                 return response()->json([
@@ -486,6 +490,8 @@ class CartController extends Controller
                     'message' => 'Order placed successfully',
                 ], 200);
             } catch (\Exception $e) {
+                $cart->status = 'cart';
+                $cart->save();
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Order placed but failed to send confirmation email. Please try again later.',

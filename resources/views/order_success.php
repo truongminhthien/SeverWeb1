@@ -88,7 +88,7 @@
     <div class="order-container">
         <h2>Order Placed Successfully!</h2>
         <?php if ($order['id_user']['role'] === 0): ?>
-            <p>Hello <?php echo htmlspecialchars($order['id_user']['username']); ?>,</p>
+            <p>Hello <?php echo htmlspecialchars($order['id_user']['name']); ?>,</p>
         <?php else: ?>
             <p>Hello <?php echo htmlspecialchars($order['customer_name']); ?>,</p>
         <?php endif; ?>

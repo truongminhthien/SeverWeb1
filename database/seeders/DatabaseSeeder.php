@@ -249,7 +249,15 @@ class DatabaseSeeder extends Seeder
                     'phone' => 123456789,
                     'address' => '123 Admin Street',
                     'role' => 1,
-                ]
+                ],
+                [
+                    'username' => 'Minh Tuấn',
+                    'password' => bcrypt('123'),
+                    'email' => 'minhtuan@gmail.com',
+                    'phone' => 123456789,
+                    'address' => '123 Admin Street',
+                    'role' => 0,
+                ],
             ]
         );
 
