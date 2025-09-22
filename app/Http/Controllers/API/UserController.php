@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Address;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -56,7 +57,7 @@ class UserController extends Controller
      */
     public function getAllUser()
     {
-        $users = User::where('status', '!=', 'delete')
+        $users = User::where('status', '!=', 'delete')->with('addresses')
             ->where('role', '!=', 2)
             ->get();
 
@@ -157,15 +158,22 @@ class UserController extends Controller
                 'username' => $request->username,
                 'email'    => $request->email,
                 'password' => Hash::make($request->password),
-                'phone'    => $request->phone,
-                'address'  => $request->address,
                 'image'    => 'uploads/default-avatar-profile-icon-of-social-media-user-vector.jpg',
                 'role'     => 0,
             ]);
+            if ($user) {
+                $user->addresses()->create([
+                    'recipient_name' => $request->username,
+                    'phone' => $request->phone,
+                    'address_line' => $request->address,
+                    'status' => 'default',
+                ]);
+            }
+
             if (!$user) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User registration failed0',
+                    'message' => 'User registration failed',
                     'user' => $user
                 ], 500);
             } else {
@@ -818,6 +826,267 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Password updated successfully'
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/users/{id}/addresses",
+     *     tags={"User"},
+     *     summary="Get all addresses by user ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of addresses for the user",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(
+     *                 property="addresses",
+     *                 type="array",
+     *                 @OA\Items(type="object")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
+     */
+    public function getAllByUser($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $addresses = $user->addresses()->get();
+
+        return response()->json([
+            'status' => 'success',
+            'addresses' => $addresses
+        ], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/users/{id}/addresses",
+     *     tags={"User"},
+     *     summary="Create a new address for user",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"recipient_name", "phone", "address_line"},
+     *             @OA\Property(property="recipient_name", type="string", example="Nguyễn Văn A"),
+     *             @OA\Property(property="phone", type="string", example="0987654321"),
+     *             @OA\Property(property="address_line", type="string", example="123 Đường ABC, Quận 1, TP.HCM"),
+     *             @OA\Property(property="status", type="string", example="default")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Address created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="address", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     )
+     * )
+     */
+    public function createNewAddress(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'recipient_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'address_line' => 'required|string|max:255',
+            'status' => 'nullable|string|in:default,non-default,other'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // If the new address is set as default, update other addresses to non-default
+        if (($request->status ?? 'other') === 'default') {
+            $user->addresses()->where('status', 'default')->update(['status' => 'non-default']);
+        }
+
+        $address = $user->addresses()->create([
+            'recipient_name' => $request->recipient_name,
+            'phone' => $request->phone,
+            'address_line' => $request->address_line,
+            'status' => $request->status ?? 'other',
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'address' => $address
+        ], 201);
+    }
+
+
+    /**
+     * @OA\Put(
+     *     path="/api/addresses/{address_id}",
+     *     tags={"User"},
+     *     summary="Update an address for user",
+     *     @OA\Parameter(
+     *         name="address_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="recipient_name", type="string", example="Nguyễn Văn B"),
+     *             @OA\Property(property="phone", type="string", example="0912345678"),
+     *             @OA\Property(property="address_line", type="string", example="456 Đường XYZ, Quận 2, TP.HCM"),
+     *             @OA\Property(property="status", type="string", example="default")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Address updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="address", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User or address not found"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     )
+     * )
+     */
+    public function updateAddress(Request $request, $address_id)
+    {
+        $validator = Validator::make($request->all(), [
+            'recipient_name' => 'sometimes|string|max:255',
+            'phone' => 'sometimes|string|max:15',
+            'address_line' => 'sometimes|string|max:255',
+            'status' => 'nullable|string|in:default,non-default,other'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+
+        $address = Address::find($address_id);
+        if (!$address) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Address not found'
+            ], 404);
+        }
+
+        // Nếu cập nhật thành default, chuyển các địa chỉ khác về non-default
+        if (($request->status ?? $address->status) === 'default') {
+            $address->user->addresses()->where('id_address', '!=', $address_id)->update(['status' => 'non-default']);
+        }
+
+        $address->update($validator->validated());
+
+        return response()->json([
+            'status' => 'success',
+            'address' => $address,
+            'addresses' => $address->user->addresses()->get()
+
+
+        ], 200);
+    }
+
+
+    /**
+     * @OA\Delete(
+     *     path="/api/addresses/{address_id}",
+     *     tags={"User"},
+     *     summary="Delete an address by ID",
+     *     @OA\Parameter(
+     *         name="address_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Address deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Address deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Address not found"
+     *     )
+     * )
+     */
+    public function deleteAddress($address_id)
+    {
+        $address = Address::find($address_id);
+        if (!$address) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Address not found'
+            ], 404);
+        }
+        if ($address->status === 'default') {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Cannot delete default address'
+            ], 400);
+        }
+
+        $address->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Address deleted successfully'
         ], 200);
     }
 }

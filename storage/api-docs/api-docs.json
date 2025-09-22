@@ -494,27 +494,24 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "customer_name",
-                                    "phone",
-                                    "address"
+                                    "id_address",
+                                    "payment_method",
+                                    "payment_status"
                                 ],
                                 "properties": {
-                                    "customer_name": {
-                                        "type": "string",
-                                        "example": "Nguyen Van A"
-                                    },
-                                    "phone": {
-                                        "type": "string",
-                                        "example": "0123456789"
-                                    },
-                                    "address": {
-                                        "type": "string",
-                                        "example": "123 Đường ABC, Quận 1, TP.HCM"
+                                    "id_address": {
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "payment_method": {
                                         "description": "Payment method, e.g., cod or bank_transfer",
                                         "type": "string",
                                         "example": "cod"
+                                    },
+                                    "payment_status": {
+                                        "description": "Payment status, e.g., paid or unpaid",
+                                        "type": "string",
+                                        "example": "pending"
                                     }
                                 },
                                 "type": "object"
@@ -1472,6 +1469,48 @@
                                         },
                                         "data": {
                                             "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Delete a category by ID",
+                "operationId": "e471aee59aa48c798379b96b8bdaeec4",
+                "parameters": [
+                    {
+                        "name": "id_category",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category deleted successfully"
                                         }
                                     },
                                     "type": "object"
@@ -3057,6 +3096,245 @@
                     },
                     "404": {
                         "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/addresses": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get all addresses by user ID",
+                "operationId": "1706e8ec20d5ba46d5fb63f0484a81a0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of addresses for the user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "addresses": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a new address for user",
+                "operationId": "fc48c5f0f32f7dc8445ee8235438237b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "recipient_name",
+                                    "phone",
+                                    "address_line"
+                                ],
+                                "properties": {
+                                    "recipient_name": {
+                                        "type": "string",
+                                        "example": "Nguyễn Văn A"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0987654321"
+                                    },
+                                    "address_line": {
+                                        "type": "string",
+                                        "example": "123 Đường ABC, Quận 1, TP.HCM"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "default"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "address": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/addresses/{address_id}": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update an address for user",
+                "operationId": "cbaa13cf26b209508c67724223c5c323",
+                "parameters": [
+                    {
+                        "name": "address_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "recipient_name": {
+                                        "type": "string",
+                                        "example": "Nguyễn Văn B"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0912345678"
+                                    },
+                                    "address_line": {
+                                        "type": "string",
+                                        "example": "456 Đường XYZ, Quận 2, TP.HCM"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "default"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Address updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "address": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User or address not found"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete an address by ID",
+                "operationId": "e1bf84377a546cd73bd0496f2d267b8d",
+                "parameters": [
+                    {
+                        "name": "address_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Address deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found"
                     }
                 }
             }

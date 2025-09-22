@@ -41,4 +41,8 @@ class Order extends Model
     {
         return $this->belongsTo(Voucher::class, 'id_voucher', 'id_voucher');
     }
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'id_address', 'id_address');
+    }
 }

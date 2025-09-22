@@ -375,11 +375,10 @@ class CartController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"customer_name", "phone", "address"},
-     *             @OA\Property(property="customer_name", type="string", example="Nguyen Van A"),
-     *             @OA\Property(property="phone", type="string", example="0123456789"),
-     *             @OA\Property(property="address", type="string", example="123 Đường ABC, Quận 1, TP.HCM"),
-     *             @OA\Property(property="payment_method", type="string", example="cod", description="Payment method, e.g., cod or bank_transfer")
+     *             required={"id_address", "payment_method", "payment_status"},
+     *             @OA\Property(property="id_address", type="integer", example=1),
+     *             @OA\Property(property="payment_method", type="string", example="cod", description="Payment method, e.g., cod or bank_transfer"),
+     *             @OA\Property(property="payment_status", type="string", example="pending", description="Payment status, e.g., paid or unpaid"),
      *         )
      *     ),
      *     @OA\Response(
@@ -424,13 +423,13 @@ class CartController extends Controller
         }
 
         // Lấy thông tin người nhận từ request
+        $total = $cart->total_amount;
         if ($request->input('payment_method') === 'cod') {
             $cart->total_amount = $cart->total_amount + 30000;
         }
-        $cart->customer_name = $request->input('customer_name');
-        $cart->phone = $request->input('phone');
-        $cart->address = $request->input('address');
-        $cart->payment_method = $request->input('payment_method'); // Mặc định là 'cod' nếu không có
+        $cart->id_address = $request->id_address;
+        $cart->payment_method = $request->payment_method === 'cod' ? $request->payment_method : 'COD';
+        $cart->payment_status = $request->payment_status;
         $cart->order_date = now();
         $cart->status = 'ordered';
         $cart->save();
@@ -463,11 +462,16 @@ class CartController extends Controller
                 'name' => $user->username,
                 'role' => $user->role,
             ],
+            'total' => $total,
             'total_amount' => $order->total_amount,
-            'customer_name' => $order->customer_name,
-            'phone' => $order->phone,
-            'address' => $order->address,
-            'payment_method' => $order->payment_method,
+            'id_address' => [
+                'recipient_name' => $order->address ? $order->address->recipient_name : null,
+                'phone' => $order->address ? $order->address->phone : null,
+                'address_line' => $order->address->address_line ? $order->address->address_line : null,
+            ],
+            'payment_method' => $order->payment_method === 'cod' ? 'Thanh toán khi nhận hàng' : 'Bank Transfer',
+            'shipping_fee' => $order->payment_method === 'cod' ? 30000 : 0,
+            'payment_status' => $order->payment_status === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán',
             'status' => $order->status,
             'order_date' => $order->order_date,
             'order_detail' => $order->orderDetails->map(function ($detail) {
@@ -495,7 +499,7 @@ class CartController extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Order placed but failed to send confirmation email. Please try again later.',
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ], 400);
             }
         }

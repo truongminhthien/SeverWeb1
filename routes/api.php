@@ -32,6 +32,10 @@ Route::get('/order-history/{id}', [UserController::class, 'orderHistory']);
 Route::post('/users', [UserController::class, 'createUserAtAdmin']);
 Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
 Route::put('/users/{id}/password', [UserController::class, 'updatePassword']);
+Route::post('/users/{id}/addresses', [UserController::class, 'createNewAddress']);
+Route::get('/users/{id}/addresses', [UserController::class, 'getAllByUser']);
+Route::put('addresses/{address_id}', [UserController::class, 'updateAddress']);
+Route::delete('/addresses/{address_id}', [UserController::class, 'deleteAddress']);
 
 use App\Http\Controllers\API\CategoryController;
 
