@@ -469,7 +469,7 @@ class CartController extends Controller
                 'phone' => $order->address ? $order->address->phone : null,
                 'address_line' => $order->address->address_line ? $order->address->address_line : null,
             ],
-            'payment_method' => $order->payment_method === 'cod' ? 'Thanh toán khi nhận hàng' : 'Bank Transfer',
+            'payment_method' => $order->payment_method === 'cod' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản ngân hàng',
             'shipping_fee' => $order->payment_method === 'cod' ? 30000 : 0,
             'payment_status' => $order->payment_status === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán',
             'status' => $order->status,
@@ -1083,10 +1083,9 @@ class CartController extends Controller
                     'phone' => $order->user->phone,
                 ] : null,
                 'total' => $order->total_amount,
-                'customer_name' => $order->customer_name,
-                'phone' => $order->phone,
                 'address' => $order->address,
                 'payment_method' => $order->payment_method,
+                'payment_status' => $order->payment_status,
                 'notes' => $order->notes,
                 'order_date' => $order->order_date,
                 'status' => $order->status,
@@ -1152,8 +1151,6 @@ class CartController extends Controller
         $orderData = [
             'id_order' => $order->id_order,
             'total' => $order->total_amount,
-            'customer_name' => $order->customer_name,
-            'phone' => $order->phone,
             'address' => $order->address,
             'payment_method' => $order->payment_method,
             'notes' => $order->notes,
@@ -1228,6 +1225,10 @@ class CartController extends Controller
                 'status' => 'failed',
                 'message' => 'Order not found'
             ], 404);
+        }
+
+        if ($request->status === 'delivered' && $order->payment_method === 'cod') {
+            $order->payment_status = 'paid';
         }
 
         $order->status = $request->status;

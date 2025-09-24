@@ -110,6 +110,8 @@
         <h3>Thông tin đơn hàng:</h3>
         <ul>
             <li><strong>Mã đơn hàng:</strong> #<?php echo $order['id_order']; ?></li>
+            <li><strong>Tên khách hàng:</strong> <?php echo $order['id_address']['recipient_name']; ?></li>
+            <li><strong>Số điện thoại:</strong> <?php echo $order['id_address']['phone']; ?></li>
             <li><strong>Ngày đặt:</strong> <?php echo date('d/m/Y', strtotime($order['order_date'])); ?></li>
             <li><strong>Phương thức thanh toán:</strong> <?php echo $order['payment_method']; ?></li>
             <li><strong>Trạng thái thanh toán:</strong> <?php echo $order['payment_status']; ?></li>
