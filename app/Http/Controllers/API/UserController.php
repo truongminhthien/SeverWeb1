@@ -1082,7 +1082,8 @@ class UserController extends Controller
             ], 400);
         }
 
-        $address->delete();
+        $address->status = 'deleted';
+        $address->save();
 
         return response()->json([
             'status' => 'success',

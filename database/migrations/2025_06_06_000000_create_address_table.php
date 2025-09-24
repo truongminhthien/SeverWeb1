@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('recipient_name');
             $table->string('phone');
             $table->string('address_line');
-            $table->string('status')->default('default')->comment('default, non-default');
+            $table->string('status')->default('default')->comment('default, non-default, deleted');
             $table->timestamps();
 
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');

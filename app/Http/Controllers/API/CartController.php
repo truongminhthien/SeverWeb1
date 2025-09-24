@@ -424,7 +424,7 @@ class CartController extends Controller
 
         // Lấy thông tin người nhận từ request
         $total = $cart->total_amount;
-        if ($request->input('payment_method') === 'cod') {
+        if ($request->input('payment_method') === 'COD') {
             $cart->total_amount = $cart->total_amount + 30000;
         }
         $cart->id_address = $request->id_address;
