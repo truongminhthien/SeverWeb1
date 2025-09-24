@@ -428,7 +428,7 @@ class CartController extends Controller
             $cart->total_amount = $cart->total_amount + 30000;
         }
         $cart->id_address = $request->id_address;
-        $cart->payment_method = $request->payment_method === 'cod' ? $request->payment_method : 'COD';
+        $cart->payment_method = $request->payment_method === 'cod' ? 'COD' : $request->payment_method;
         $cart->payment_status = $request->payment_status;
         $cart->order_date = now();
         $cart->status = 'ordered';
@@ -469,8 +469,8 @@ class CartController extends Controller
                 'phone' => $order->address ? $order->address->phone : null,
                 'address_line' => $order->address->address_line ? $order->address->address_line : null,
             ],
-            'payment_method' => $order->payment_method === 'cod' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản ngân hàng',
-            'shipping_fee' => $order->payment_method === 'cod' ? 30000 : 0,
+            'payment_method' => $order->payment_method === 'COD' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản ngân hàng',
+            'shipping_fee' => $order->payment_method === 'COD' ? 30000 : 0,
             'payment_status' => $order->payment_status === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán',
             'status' => $order->status,
             'order_date' => $order->order_date,
@@ -1153,6 +1153,7 @@ class CartController extends Controller
             'total' => $order->total_amount,
             'address' => $order->address,
             'payment_method' => $order->payment_method,
+            'payment_status' => $order->payment_status,
             'notes' => $order->notes,
             'order_date' => $order->order_date,
             'status' => $order->status,
@@ -1227,7 +1228,7 @@ class CartController extends Controller
             ], 404);
         }
 
-        if ($request->status === 'delivered' && $order->payment_method === 'cod') {
+        if ($request->status === 'delivered' && $order->payment_method === 'COD') {
             $order->payment_status = 'paid';
         }
 
@@ -1308,10 +1309,10 @@ class CartController extends Controller
                 'status' => 'failed',
                 'message' => 'Order has already been cancelled'
             ], 400);
-        } elseif (!in_array($order->status, ['ordered', 'preparing'])) {
+        } elseif (!in_array($order->status, ['ordered'])) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'You can only cancel orders with status ordered or preparing'
+                'message' => 'You can only cancel orders with status ordered'
             ], 400);
         }
 
